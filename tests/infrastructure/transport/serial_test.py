@@ -2,7 +2,7 @@
 
 '''
 Module
-    serial_transport_test.py
+    serial_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -24,7 +24,7 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from tetrapoder.core.model.exceptions.runner_error import RunnerError
-from tetrapoder.infrastructure.transport.serial_transport import SerialTransport
+from tetrapoder.infrastructure.transport.serial import SerialTransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

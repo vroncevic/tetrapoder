@@ -32,7 +32,7 @@ from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
 from tetrapoder.core.service.runner.motion_runner import MotionRunner
 from tetrapoder.infrastructure.command.idefinition import ICommandDefinition
 from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
-from tetrapoder.infrastructure.transport.serial_transport import SerialTransport
+from tetrapoder.infrastructure.transport.serial import SerialTransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
