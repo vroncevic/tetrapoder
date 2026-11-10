@@ -55,7 +55,7 @@ class TestMotionPlan(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
+        plan: MotionPlan = MotionPlan(commands=())
         self.assertEqual(len(plan.commands), 0)
         self.assertEqual(plan.commands, ())
 
@@ -78,7 +78,7 @@ class TestMotionPlan(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
+        plan: MotionPlan = MotionPlan(commands=())
         with self.assertRaises(FrozenInstanceError):
             plan.commands = ()  # type: ignore[misc]
 

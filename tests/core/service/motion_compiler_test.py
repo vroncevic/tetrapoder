@@ -90,7 +90,7 @@ class TestMotionCompiler(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
+        plan: MotionPlan = MotionPlan(commands=())
         with self.assertRaises(CompilerError):
             MotionCompiler.compile_to_file(plan, '/non_existent_directory_xyz/test.bin')
 

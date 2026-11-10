@@ -46,4 +46,4 @@ class MotionPlan:
                 | commands - Immutable tuple of sequential plan commands.
     '''
 
-    commands: tuple[PlanCommand, ...] = ()
+    commands: tuple[PlanCommand, ...]

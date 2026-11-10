@@ -65,7 +65,7 @@ class TestPlanCommand(TestCase):
 
             :exceptions: None.
         '''
-        cmd: PlanCommand = PlanCommand(cmd_id=0x01, payload=b'')
+        cmd: PlanCommand = PlanCommand(cmd_id=0x01, payload=b'', description='Test')
         with self.assertRaises(FrozenInstanceError):
             cmd.cmd_id = 0x02  # type: ignore[misc]
 

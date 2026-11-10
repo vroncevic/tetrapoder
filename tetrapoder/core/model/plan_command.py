@@ -48,4 +48,4 @@ class PlanCommand:
 
     cmd_id: int
     payload: bytes
-    description: str = ''
+    description: str
