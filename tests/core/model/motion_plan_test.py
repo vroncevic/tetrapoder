@@ -21,9 +21,11 @@ Info
 
 from __future__ import annotations
 
+from dataclasses import FrozenInstanceError
 from unittest import TestCase, main
 
 from tetrapoder.core.model.motion_plan import MotionPlan
+from tetrapoder.core.model.plan_command import PlanCommand
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -43,8 +45,8 @@ class TestMotionPlan(TestCase):
 
             :methods:
                 | test_empty_plan - Verifies empty plan initialization.
-                | test_add_commands - Verifies appending commands and command count.
-                | test_clear_plan - Verifies clearing plan commands.
+                | test_plan_with_commands - Verifies plan with command sequence.
+                | test_immutability - Verifies that MotionPlan cannot be mutated.
     '''
 
     def test_empty_plan(self) -> None:
@@ -54,33 +56,31 @@ class TestMotionPlan(TestCase):
             :exceptions: None.
         '''
         plan: MotionPlan = MotionPlan()
-        self.assertEqual(plan.count(), 0)
         self.assertEqual(len(plan.commands), 0)
+        self.assertEqual(plan.commands, ())
 
-    def test_add_commands(self) -> None:
+    def test_plan_with_commands(self) -> None:
         '''
-            Verifies appending commands and command count.
+            Verifies plan with command sequence.
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
-        plan.add_command(1, b'', 'Ping')
-        plan.add_command(2, b'\x01', 'Stop')
-        self.assertEqual(plan.count(), 2)
+        cmd1: PlanCommand = PlanCommand(cmd_id=1, payload=b'', description='Ping')
+        cmd2: PlanCommand = PlanCommand(cmd_id=2, payload=b'\x01', description='Stop')
+        plan: MotionPlan = MotionPlan(commands=(cmd1, cmd2))
+        self.assertEqual(len(plan.commands), 2)
         self.assertEqual(plan.commands[0].cmd_id, 1)
         self.assertEqual(plan.commands[1].cmd_id, 2)
 
-    def test_clear_plan(self) -> None:
+    def test_immutability(self) -> None:
         '''
-            Verifies clearing plan commands.
+            Verifies that MotionPlan cannot be mutated.
 
             :exceptions: None.
         '''
         plan: MotionPlan = MotionPlan()
-        plan.add_command(1, b'', 'Ping')
-        self.assertEqual(plan.count(), 1)
-        plan.clear()
-        self.assertEqual(plan.count(), 0)
+        with self.assertRaises(FrozenInstanceError):
+            plan.commands = ()  # type: ignore[misc]
 
 
 if __name__ == '__main__':

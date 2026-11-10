@@ -21,6 +21,7 @@ Info
 
 from __future__ import annotations
 
+from dataclasses import FrozenInstanceError
 from unittest import TestCase, main
 
 from tetrapoder.core.model.plan_command import PlanCommand
@@ -42,12 +43,13 @@ class TestPlanCommand(TestCase):
         It defines:
 
             :methods:
-                | test_initialization - Verifies attributes and payload length calculation.
+                | test_initialization - Verifies attributes initialization.
+                | test_immutability - Verifies that PlanCommand cannot be modified.
     '''
 
     def test_initialization(self) -> None:
         '''
-            Verifies attributes and payload length calculation.
+            Verifies attributes initialization.
 
             :exceptions: None.
         '''
@@ -55,7 +57,17 @@ class TestPlanCommand(TestCase):
         self.assertEqual(cmd.cmd_id, 0x01)
         self.assertEqual(cmd.payload, b'\x01\x02')
         self.assertEqual(cmd.description, 'Test Command')
-        self.assertEqual(cmd.payload_length(), 2)
+        self.assertEqual(len(cmd.payload), 2)
+
+    def test_immutability(self) -> None:
+        '''
+            Verifies that PlanCommand cannot be modified.
+
+            :exceptions: None.
+        '''
+        cmd: PlanCommand = PlanCommand(cmd_id=0x01, payload=b'')
+        with self.assertRaises(FrozenInstanceError):
+            cmd.cmd_id = 0x02  # type: ignore[misc]
 
 
 if __name__ == '__main__':

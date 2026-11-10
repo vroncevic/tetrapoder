@@ -2,7 +2,7 @@
 
 '''
 Module
-    gait_type_test.py
+    gait_type.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,14 +16,12 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for GaitType enumeration.
+    Enumeration of predefined gait types and postures for quadruped robot.
 '''
 
 from __future__ import annotations
 
-from unittest import TestCase, main
-
-from tetrapoder.core.service.gait_type import GaitType
+from enum import IntEnum
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -35,28 +33,26 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestGaitType(TestCase):
+class GaitType(IntEnum):
     '''
-        Test cases verifying GaitType enumeration.
+        Predefined robot movement and posture gait identifiers.
 
         It defines:
 
-            :methods:
-                | test_gait_values - Verifies integer values for gait types.
+            :attributes:
+                | SIT - Resting seated posture.
+                | STAND - Default neutral standing pose.
+                | STEP_FORWARD - Forward walking gait.
+                | STEP_BACKWARD - Backward walking gait.
+                | TURN_LEFT - Counter-clockwise yaw rotation in place.
+                | TURN_RIGHT - Clockwise yaw rotation in place.
+                | HAND_WAVE - Greeting gesture waving front leg.
     '''
 
-    def test_gait_values(self) -> None:
-        '''
-            Verifies integer values for gait types.
-
-            :exceptions: None.
-        '''
-        self.assertEqual(GaitType.SIT, 0)
-        self.assertEqual(GaitType.STAND, 1)
-        self.assertEqual(GaitType.STEP_FORWARD, 2)
-        self.assertEqual(GaitType.STEP_BACKWARD, 3)
-        self.assertEqual(GaitType.HAND_WAVE, 6)
-
-
-if __name__ == '__main__':
-    main()
+    SIT = 0
+    STAND = 1
+    STEP_FORWARD = 2
+    STEP_BACKWARD = 3
+    TURN_LEFT = 4
+    TURN_RIGHT = 5
+    HAND_WAVE = 6

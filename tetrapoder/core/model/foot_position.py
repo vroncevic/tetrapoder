@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Immutable Cartesian 3D foot position value object.
+    Pure immutable Cartesian 3D foot position value object.
 '''
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class FootPosition:
     '''
         Defines immutable 3D Cartesian coordinates of a foot tip.
@@ -44,19 +44,8 @@ class FootPosition:
                 | x - Lateral coordinate in mm.
                 | y - Forward coordinate in mm.
                 | z - Vertical elevation coordinate in mm (negative downward).
-            :methods:
-                | to_tuple - Returns coordinates as a float 3-tuple.
     '''
 
     x: float
     y: float
     z: float
-
-    def to_tuple(self) -> tuple[float, float, float]:
-        '''
-            Converts foot coordinates to a standard 3-tuple.
-
-            :return: Tuple of (x, y, z) in millimeters.
-            :exceptions: None.
-        '''
-        return (self.x, self.y, self.z)

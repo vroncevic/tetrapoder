@@ -25,9 +25,10 @@ from os import remove
 from os.path import exists
 from unittest import TestCase, main
 
+from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.exceptions.compiler_error import CompilerError
 from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.command_id import CommandId
+from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.motion_compiler import MotionCompiler
 from tetrapoder.core.service.protocol_frame_builder import ProtocolFrameBuilder
 
@@ -59,8 +60,8 @@ class TestMotionCompiler(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
-        plan.add_command(int(CommandId.PING), b'', 'Ping')
+        cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
+        plan: MotionPlan = MotionPlan(commands=(cmd,))
         data: bytes = MotionCompiler.compile(plan)
         self.assertEqual(len(data), 4)
         self.assertEqual(data[0], ProtocolFrameBuilder.SYNC_BYTE)
@@ -72,8 +73,8 @@ class TestMotionCompiler(TestCase):
             :exceptions: None.
         '''
         file_path: str = '/tmp/test_plan.bin'
-        plan: MotionPlan = MotionPlan()
-        plan.add_command(int(CommandId.PING), b'', 'Ping')
+        cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
+        plan: MotionPlan = MotionPlan(commands=(cmd,))
 
         try:
             bytes_written: int = MotionCompiler.compile_to_file(plan, file_path)

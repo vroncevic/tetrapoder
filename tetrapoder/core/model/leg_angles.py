@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Immutable 3-DOF leg joint angles value object.
+    Pure immutable 3-DOF leg joint angles value object.
 '''
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class LegAngles:
     '''
         Defines immutable joint angles in degrees for a 3-DOF leg.
@@ -44,33 +44,8 @@ class LegAngles:
                 | coxa - Coxa horizontal hip servo angle in degrees (0..180).
                 | femur - Femur shoulder elevation servo angle in degrees (0..180).
                 | tibia - Tibia knee elevation servo angle in degrees (0..180).
-            :methods:
-                | to_tuple - Returns angles as float 3-tuple in degrees.
-                | to_tenths - Returns angles rounded to tenths of a degree (0..1800).
     '''
 
     coxa: float
     femur: float
     tibia: float
-
-    def to_tuple(self) -> tuple[float, float, float]:
-        '''
-            Converts joint angles to float degrees 3-tuple.
-
-            :return: Tuple of (coxa, femur, tibia) in degrees.
-            :exceptions: None.
-        '''
-        return (self.coxa, self.femur, self.tibia)
-
-    def to_tenths(self) -> tuple[int, int, int]:
-        '''
-            Converts joint angles to integer tenths of a degree for firmware transmission.
-
-            :return: Tuple of (coxa, femur, tibia) in tenths of a degree (0..1800).
-            :exceptions: None.
-        '''
-        return (
-            int(round(self.coxa * 10.0)),
-            int(round(self.femur * 10.0)),
-            int(round(self.tibia * 10.0)),
-        )

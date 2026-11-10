@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
-from tetrapoder.core.service.command_id import CommandId
 from tetrapoder.core.service.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'

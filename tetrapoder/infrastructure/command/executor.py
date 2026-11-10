@@ -83,8 +83,7 @@ class TetrapoderCommandExecutor:
         gait_name: str = str(params.get('gait', 'stand'))
         output: str = str(params.get('output', 'motion.bin'))
 
-        plan: MotionPlan = MotionPlan()
-        builder: GaitPlanBuilder = GaitPlanBuilder(plan)
+        builder: GaitPlanBuilder = GaitPlanBuilder()
 
         match gait_name:
             case 'sit':
@@ -96,12 +95,14 @@ class TetrapoderCommandExecutor:
             case _:
                 builder.stand()
 
+        plan: MotionPlan = builder.build()
+
         match action:
             case 'compile':
                 count: int = MotionCompiler.compile_to_file(plan, output)
                 return {
                     'returncode': 0,
-                    'stdout': f'Compiled {plan.count()} commands ({count} bytes) to {output}',
+                    'stdout': f'Compiled {len(plan.commands)} commands ({count} bytes) to {output}',
                     'stderr': '',
                 }
             case 'ping':
@@ -123,7 +124,7 @@ class TetrapoderCommandExecutor:
             case _:
                 return {
                     'returncode': 0,
-                    'stdout': f'Generated {plan.count()} gait commands for {gait_name}',
+                    'stdout': f'Generated {len(plan.commands)} gait commands for {gait_name}',
                     'stderr': '',
                 }
 

@@ -43,13 +43,13 @@ class TestLegAngles(TestCase):
         It defines:
 
             :methods:
-                | test_initialization - Verifies attributes and angle conversions.
+                | test_initialization - Verifies attributes initialization.
                 | test_immutability - Verifies that LegAngles attributes cannot be mutated.
     '''
 
     def test_initialization(self) -> None:
         '''
-            Verifies attributes and angle conversions.
+            Verifies attributes initialization.
 
             :exceptions: None.
         '''
@@ -57,8 +57,6 @@ class TestLegAngles(TestCase):
         self.assertEqual(angles.coxa, 90.0)
         self.assertEqual(angles.femur, 45.5)
         self.assertEqual(angles.tibia, 120.3)
-        self.assertEqual(angles.to_tuple(), (90.0, 45.5, 120.3))
-        self.assertEqual(angles.to_tenths(), (900, 455, 1203))
 
     def test_immutability(self) -> None:
         '''

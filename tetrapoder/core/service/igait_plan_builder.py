@@ -23,6 +23,8 @@ from __future__ import annotations
 
 from typing import Protocol, Self, runtime_checkable
 
+from tetrapoder.core.model.motion_plan import MotionPlan
+
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
@@ -45,6 +47,7 @@ class IGaitPlanBuilder(Protocol):
                 | sit - Appends sitting posture command.
                 | walk - Appends forward or backward walk command.
                 | turn - Appends turn left or turn right command.
+                | build - Constructs immutable MotionPlan from accumulated commands.
     '''
 
     def stand(self) -> Self:
@@ -77,4 +80,11 @@ class IGaitPlanBuilder(Protocol):
             :param steps: Number of turn cycles.
             :param to_right: True to turn right, False to turn left.
             :return: Self for method chaining.
+        '''
+
+    def build(self) -> MotionPlan:
+        '''
+            Constructs immutable MotionPlan from accumulated commands.
+
+            :return: Immutable MotionPlan instance.
         '''

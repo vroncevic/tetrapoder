@@ -47,6 +47,7 @@ class IKinematicsSolver(Protocol):
                 | cartesian_to_polar - Converts Cartesian coordinates to polar link angles.
                 | polar_to_servo - Converts polar angles into servo shaft angles.
                 | solve - Solves inverse kinematics for a target leg foot position.
+                | to_tenths - Converts joint angles to integer tenths of a degree.
     '''
 
     def cartesian_to_polar(self, x: float, y: float, z: float) -> tuple[float, float, float]:
@@ -77,4 +78,12 @@ class IKinematicsSolver(Protocol):
             :param leg: Leg index (0..3).
             :param target: FootPosition Cartesian coordinates.
             :return: LegAngles containing servo angles in degrees.
+        '''
+
+    def to_tenths(self, angles: LegAngles) -> tuple[int, int, int]:
+        '''
+            Converts joint angles to integer tenths of a degree.
+
+            :param angles: LegAngles instance in degrees.
+            :return: Tuple of (coxa, femur, tibia) in tenths of a degree.
         '''

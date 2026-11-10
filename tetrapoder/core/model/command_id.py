@@ -2,7 +2,7 @@
 
 '''
 Module
-    command_id_test.py
+    command_id.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,14 +16,12 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for CommandId enumeration.
+    Enumeration of binary wire protocol command identifiers (PC -> Robot).
 '''
 
 from __future__ import annotations
 
-from unittest import TestCase, main
-
-from tetrapoder.core.service.command_id import CommandId
+from enum import IntEnum
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -35,29 +33,32 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestCommandId(TestCase):
+class CommandId(IntEnum):
     '''
-        Test cases verifying CommandId enumeration.
+        Enumeration of command identifiers supported by robot controller.
 
         It defines:
 
-            :methods:
-                | test_command_values - Verifies integer values for command IDs.
+            :attributes:
+                | PING - Heartbeat ping query.
+                | STOP - Emergency stop / servo disable.
+                | SET_SPEED - Set global speed scaling factor.
+                | GAIT_STEP - Execute predefined gait step or posture.
+                | SET_LEG_SITE - Direct Cartesian target for a leg.
+                | SET_LEG_ANGLES - Direct servo angles for a single leg.
+                | QUEUE_KEYFRAME - Enqueue joint angles keyframe into memory pool.
+                | CLEAR_QUEUE - Clear motion queue and release keyframes.
+                | GET_STATUS - Request telemetry status frame.
+                | RESET_ERRORS - Clear error flags on controller.
     '''
 
-    def test_command_values(self) -> None:
-        '''
-            Verifies integer values for command IDs.
-
-            :exceptions: None.
-        '''
-        self.assertEqual(CommandId.PING, 0x01)
-        self.assertEqual(CommandId.STOP, 0x02)
-        self.assertEqual(CommandId.SET_SPEED, 0x03)
-        self.assertEqual(CommandId.GAIT_STEP, 0x10)
-        self.assertEqual(CommandId.QUEUE_KEYFRAME, 0x20)
-        self.assertEqual(CommandId.CLEAR_QUEUE, 0x21)
-
-
-if __name__ == '__main__':
-    main()
+    PING = 0x01
+    STOP = 0x02
+    SET_SPEED = 0x03
+    GAIT_STEP = 0x10
+    SET_LEG_SITE = 0x11
+    SET_LEG_ANGLES = 0x12
+    QUEUE_KEYFRAME = 0x20
+    CLEAR_QUEUE = 0x21
+    GET_STATUS = 0x30
+    RESET_ERRORS = 0x31

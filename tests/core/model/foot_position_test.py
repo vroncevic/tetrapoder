@@ -43,13 +43,13 @@ class TestFootPosition(TestCase):
         It defines:
 
             :methods:
-                | test_initialization - Verifies attributes initialization and to_tuple conversion.
+                | test_initialization - Verifies attributes initialization.
                 | test_immutability - Verifies that FootPosition attributes cannot be modified.
     '''
 
     def test_initialization(self) -> None:
         '''
-            Verifies attributes initialization and to_tuple conversion.
+            Verifies attributes initialization.
 
             :exceptions: None.
         '''
@@ -57,7 +57,6 @@ class TestFootPosition(TestCase):
         self.assertEqual(foot.x, 10.0)
         self.assertEqual(foot.y, 20.0)
         self.assertEqual(foot.z, -30.0)
-        self.assertEqual(foot.to_tuple(), (10.0, 20.0, -30.0))
 
     def test_immutability(self) -> None:
         '''

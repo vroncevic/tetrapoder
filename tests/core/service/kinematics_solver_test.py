@@ -48,6 +48,7 @@ class TestKinematicsSolver(TestCase):
                 | test_reachability - Verifies reachable workspace calculation for neutral pose.
                 | test_out_of_reach_error - Verifies exception raised when target exceeds leg reach.
                 | test_invalid_leg_index - Verifies exception raised for invalid leg index.
+                | test_to_tenths - Verifies conversion of angles to integer tenths of a degree.
     '''
 
     def test_reachability(self) -> None:
@@ -84,6 +85,15 @@ class TestKinematicsSolver(TestCase):
         target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
         with self.assertRaises(KinematicsError):
             KinematicsSolver.solve(4, target)
+
+    def test_to_tenths(self) -> None:
+        '''
+            Verifies conversion of angles to integer tenths of a degree.
+
+            :exceptions: None.
+        '''
+        angles: LegAngles = LegAngles(coxa=90.0, femur=45.5, tibia=120.3)
+        self.assertEqual(KinematicsSolver.to_tenths(angles), (900, 455, 1203))
 
 
 if __name__ == '__main__':

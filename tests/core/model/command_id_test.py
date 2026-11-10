@@ -2,7 +2,7 @@
 
 '''
 Module
-    command_id.py
+    command_id_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,12 +16,14 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Enumerates inbound binary protocol command IDs.
+    Unit tests for CommandId enumeration.
 '''
 
 from __future__ import annotations
 
-from enum import IntEnum
+from unittest import TestCase, main
+
+from tetrapoder.core.model.command_id import CommandId
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -33,17 +35,29 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class CommandId(IntEnum):
+class TestCommandId(TestCase):
     '''
-        Enumerates inbound binary protocol command IDs accepted by robot firmware.
+        Test cases verifying CommandId enumeration.
+
+        It defines:
+
+            :methods:
+                | test_command_values - Verifies integer values for command IDs.
     '''
 
-    PING = 0x01
-    STOP = 0x02
-    SET_SPEED = 0x03
-    GAIT_STEP = 0x10
-    SET_LEG_SITE = 0x11
-    QUEUE_KEYFRAME = 0x20
-    CLEAR_QUEUE = 0x21
-    GET_STATUS = 0x30
-    RESET_ERRORS = 0x31
+    def test_command_values(self) -> None:
+        '''
+            Verifies integer values for command IDs.
+
+            :exceptions: None.
+        '''
+        self.assertEqual(CommandId.PING, 0x01)
+        self.assertEqual(CommandId.STOP, 0x02)
+        self.assertEqual(CommandId.SET_SPEED, 0x03)
+        self.assertEqual(CommandId.GAIT_STEP, 0x10)
+        self.assertEqual(CommandId.QUEUE_KEYFRAME, 0x20)
+        self.assertEqual(CommandId.CLEAR_QUEUE, 0x21)
+
+
+if __name__ == '__main__':
+    main()

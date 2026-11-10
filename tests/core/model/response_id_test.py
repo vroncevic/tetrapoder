@@ -2,7 +2,7 @@
 
 '''
 Module
-    gait_type.py
+    response_id_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,12 +16,14 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Enumerates predefined robot gait and posture types.
+    Unit tests for ResponseId enumeration.
 '''
 
 from __future__ import annotations
 
-from enum import IntEnum
+from unittest import TestCase, main
+
+from tetrapoder.core.model.response_id import ResponseId
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -33,16 +35,27 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class GaitType(IntEnum):
+class TestResponseId(TestCase):
     '''
-        Enumerates predefined robot gait and choreography sequence types.
+        Test cases verifying ResponseId enumeration.
+
+        It defines:
+
+            :methods:
+                | test_response_values - Verifies integer values for response IDs.
     '''
 
-    SIT = 0
-    STAND = 1
-    STEP_FORWARD = 2
-    STEP_BACKWARD = 3
-    TURN_LEFT = 4
-    TURN_RIGHT = 5
-    HAND_WAVE = 6
-    HAND_SHAKE = 7
+    def test_response_values(self) -> None:
+        '''
+            Verifies integer values for response IDs.
+
+            :exceptions: None.
+        '''
+        self.assertEqual(ResponseId.ACK, 0x80)
+        self.assertEqual(ResponseId.NACK, 0x81)
+        self.assertEqual(ResponseId.PONG, 0x84)
+        self.assertEqual(ResponseId.STATUS, 0x90)
+
+
+if __name__ == '__main__':
+    main()

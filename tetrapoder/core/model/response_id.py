@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Enumerates outbound binary protocol response IDs.
+    Enumeration of wire protocol response identifiers (Robot -> PC).
 '''
 
 from __future__ import annotations
@@ -35,7 +35,15 @@ __status__ = 'Updated'
 
 class ResponseId(IntEnum):
     '''
-        Enumerates outbound binary protocol response IDs returned by robot firmware.
+        Enumeration of response frames emitted by robot microcontroller.
+
+        It defines:
+
+            :attributes:
+                | ACK - Positive acknowledgment.
+                | NACK - Negative acknowledgment with error code.
+                | PONG - Heartbeat response to PING.
+                | STATUS - Periodic telemetry status packet.
     '''
 
     ACK = 0x80

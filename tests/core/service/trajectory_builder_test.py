@@ -23,10 +23,11 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.command_id import CommandId
+from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.trajectory_builder import TrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
@@ -57,11 +58,12 @@ class TestTrajectoryBuilder(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
-        builder: TrajectoryBuilder = TrajectoryBuilder(plan)
+        commands: list[PlanCommand] = []
+        builder: TrajectoryBuilder = TrajectoryBuilder(commands)
         target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
         builder.add_keyframe(0, target, duration_ms=250)
-        self.assertEqual(plan.count(), 1)
+        plan: MotionPlan = MotionPlan(commands=tuple(commands))
+        self.assertEqual(len(plan.commands), 1)
         self.assertEqual(plan.commands[0].cmd_id, int(CommandId.QUEUE_KEYFRAME))
 
     def test_add_joint_keyframe(self) -> None:
@@ -70,11 +72,12 @@ class TestTrajectoryBuilder(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
-        builder: TrajectoryBuilder = TrajectoryBuilder(plan)
+        commands: list[PlanCommand] = []
+        builder: TrajectoryBuilder = TrajectoryBuilder(commands)
         angles: LegAngles = LegAngles(coxa=90.0, femur=90.0, tibia=90.0)
         builder.add_joint_keyframe(0xFF, angles, duration_ms=100)
-        self.assertEqual(plan.count(), 1)
+        plan: MotionPlan = MotionPlan(commands=tuple(commands))
+        self.assertEqual(len(plan.commands), 1)
         self.assertEqual(plan.commands[0].cmd_id, int(CommandId.QUEUE_KEYFRAME))
 
     def test_actions_and_speed(self) -> None:
@@ -83,10 +86,11 @@ class TestTrajectoryBuilder(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
-        builder: TrajectoryBuilder = TrajectoryBuilder(plan)
+        commands: list[PlanCommand] = []
+        builder: TrajectoryBuilder = TrajectoryBuilder(commands)
         builder.set_speed(5).action_wave(2).emergency_stop()
-        self.assertEqual(plan.count(), 3)
+        plan: MotionPlan = MotionPlan(commands=tuple(commands))
+        self.assertEqual(len(plan.commands), 3)
         self.assertEqual(plan.commands[0].cmd_id, int(CommandId.SET_SPEED))
         self.assertEqual(plan.commands[1].cmd_id, int(CommandId.GAIT_STEP))
         self.assertEqual(plan.commands[2].cmd_id, int(CommandId.STOP))

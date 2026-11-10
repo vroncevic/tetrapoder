@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Immutable motion plan command data model.
+    Pure immutable motion plan command data model.
 '''
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class PlanCommand:
     '''
         Defines an immutable motion plan command in a choreography sequence.
@@ -44,19 +44,8 @@ class PlanCommand:
                 | cmd_id - Numeric command identifier byte.
                 | payload - Serialized command payload bytes.
                 | description - Human-readable explanation of command.
-            :methods:
-                | payload_length - Returns byte length of command payload.
     '''
 
     cmd_id: int
     payload: bytes
     description: str = ''
-
-    def payload_length(self) -> int:
-        '''
-            Returns byte length of command payload.
-
-            :return: Number of payload bytes.
-            :exceptions: None.
-        '''
-        return len(self.payload)

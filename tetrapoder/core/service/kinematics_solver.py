@@ -53,6 +53,7 @@ class KinematicsSolver:
                 | cartesian_to_polar - Transforms 3D Cartesian coordinates to polar angles.
                 | polar_to_servo - Converts polar angles to calibrated servo angles.
                 | solve - Solves inverse kinematics for a target leg foot position.
+                | to_tenths - Converts joint angles to integer tenths of a degree.
     '''
 
     COXA_LENGTH: ClassVar[float] = 27.5
@@ -138,3 +139,18 @@ class KinematicsSolver:
 
         alpha, beta, gamma = cls.cartesian_to_polar(target.x, target.y, target.z)
         return cls.polar_to_servo(leg, alpha, beta, gamma)
+
+    @classmethod
+    def to_tenths(cls, angles: LegAngles) -> tuple[int, int, int]:
+        '''
+            Converts joint angles to integer tenths of a degree.
+
+            :param angles: LegAngles instance in degrees.
+            :return: Tuple of (coxa, femur, tibia) in tenths of a degree.
+            :exceptions: None.
+        '''
+        return (
+            int(round(angles.coxa * 10.0)),
+            int(round(angles.femur * 10.0)),
+            int(round(angles.tibia * 10.0)),
+        )

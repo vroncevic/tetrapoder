@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.command_id import CommandId
 from tetrapoder.core.service.gait_plan_builder import GaitPlanBuilder
 
 __author__ = 'Vladimir Roncevic'
@@ -54,10 +54,10 @@ class TestGaitPlanBuilder(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
-        builder: GaitPlanBuilder = GaitPlanBuilder(plan)
+        builder: GaitPlanBuilder = GaitPlanBuilder()
         builder.stand().sit()
-        self.assertEqual(plan.count(), 2)
+        plan: MotionPlan = builder.build()
+        self.assertEqual(len(plan.commands), 2)
         self.assertEqual(plan.commands[0].cmd_id, int(CommandId.GAIT_STEP))
         self.assertEqual(plan.commands[1].cmd_id, int(CommandId.GAIT_STEP))
 
@@ -67,13 +67,13 @@ class TestGaitPlanBuilder(TestCase):
 
             :exceptions: None.
         '''
-        plan: MotionPlan = MotionPlan()
-        builder: GaitPlanBuilder = GaitPlanBuilder(plan)
+        builder: GaitPlanBuilder = GaitPlanBuilder()
         builder.walk(steps=3, backward=False)
         builder.walk(steps=2, backward=True)
         builder.turn(steps=1, to_right=False)
         builder.turn(steps=1, to_right=True)
-        self.assertEqual(plan.count(), 4)
+        plan: MotionPlan = builder.build()
+        self.assertEqual(len(plan.commands), 4)
 
 
 if __name__ == '__main__':

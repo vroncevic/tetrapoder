@@ -16,12 +16,12 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    High-level motion plan model storing ordered sequences of robot commands.
+    Pure immutable motion plan domain model storing sequence of robot commands.
 '''
 
 from __future__ import annotations
 
-from typing import Self
+from dataclasses import dataclass
 
 from tetrapoder.core.model.plan_command import PlanCommand
 
@@ -35,68 +35,15 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
+@dataclass(frozen=True, slots=True, kw_only=True)
 class MotionPlan:
     '''
-        Defines high-level MotionPlan container for choreographies and keyframes.
+        Defines immutable motion plan entity containing sequence of robot commands.
 
         It defines:
 
             :attributes:
-                | _commands - Internal list of sequential plan commands.
-            :methods:
-                | __init__ - Initializes empty motion plan container.
-                | add_command - Appends a command to the execution plan.
-                | commands - Returns immutable tuple of commands.
-                | count - Returns total number of commands in plan.
-                | clear - Clears all commands from plan.
+                | commands - Immutable tuple of sequential plan commands.
     '''
 
-    _commands: list[PlanCommand]
-
-    def __init__(self) -> None:
-        '''
-            Initializes empty motion plan container.
-
-            :exceptions: None.
-        '''
-        self._commands = []
-
-    def add_command(self, cmd_id: int, payload: bytes, description: str = '') -> Self:
-        '''
-            Appends a command to the execution plan.
-
-            :param cmd_id: Numeric command identifier.
-            :param payload: Serialized payload bytes.
-            :param description: Human-readable command description.
-            :return: Self for method chaining.
-            :exceptions: None.
-        '''
-        self._commands.append(PlanCommand(cmd_id=cmd_id, payload=payload, description=description))
-        return self
-
-    @property
-    def commands(self) -> tuple[PlanCommand, ...]:
-        '''
-            Returns immutable tuple of commands in sequence.
-
-            :return: Immutable tuple of plan commands.
-            :exceptions: None.
-        '''
-        return tuple(self._commands)
-
-    def count(self) -> int:
-        '''
-            Returns total number of commands in plan.
-
-            :return: Integer count of commands.
-            :exceptions: None.
-        '''
-        return len(self._commands)
-
-    def clear(self) -> None:
-        '''
-            Clears all commands from plan.
-
-            :exceptions: None.
-        '''
-        self._commands.clear()
+    commands: tuple[PlanCommand, ...] = ()

@@ -23,11 +23,12 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.command_id import CommandId
+from tetrapoder.core.model.plan_command import PlanCommand
+from tetrapoder.core.model.response_id import ResponseId
 from tetrapoder.core.service.motion_runner import MotionRunner
 from tetrapoder.core.service.protocol_frame_builder import ProtocolFrameBuilder
-from tetrapoder.core.service.response_id import ResponseId
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -155,8 +156,8 @@ class TestMotionRunner(TestCase):
         '''
         ack_frame: bytes = ProtocolFrameBuilder.build_frame(int(ResponseId.ACK), b'\x00')
         transport: MockTransport = MockTransport(canned_response=ack_frame)
-        plan: MotionPlan = MotionPlan()
-        plan.add_command(int(CommandId.PING), b'', 'Ping')
+        cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
+        plan: MotionPlan = MotionPlan(commands=(cmd,))
         self.assertTrue(MotionRunner.execute(plan, transport))
 
     def test_execute_nack(self) -> None:
@@ -167,8 +168,8 @@ class TestMotionRunner(TestCase):
         '''
         nack_frame: bytes = ProtocolFrameBuilder.build_frame(int(ResponseId.NACK), b'\x01')
         transport: MockTransport = MockTransport(canned_response=nack_frame)
-        plan: MotionPlan = MotionPlan()
-        plan.add_command(int(CommandId.PING), b'', 'Ping')
+        cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
+        plan: MotionPlan = MotionPlan(commands=(cmd,))
         self.assertFalse(MotionRunner.execute(plan, transport))
 
 

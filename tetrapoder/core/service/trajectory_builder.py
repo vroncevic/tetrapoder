@@ -24,11 +24,11 @@ from __future__ import annotations
 from struct import pack
 from typing import Self
 
+from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.foot_position import FootPosition
+from tetrapoder.core.model.gait_type import GaitType
 from tetrapoder.core.model.leg_angles import LegAngles
-from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.command_id import CommandId
-from tetrapoder.core.service.gait_type import GaitType
+from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.kinematics_solver import KinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
@@ -49,9 +49,9 @@ class TrajectoryBuilder:
         It defines:
 
             :attributes:
-                | _plan - Reference to target MotionPlan instance.
+                | _commands - Mutable accumulator list of plan commands.
             :methods:
-                | __init__ - Initializes TrajectoryBuilder with target MotionPlan.
+                | __init__ - Initializes TrajectoryBuilder with optional commands list.
                 | add_keyframe - Solves IK and enqueues joint keyframe from Cartesian coordinates.
                 | add_joint_keyframe - Directly enqueues joint angles in degrees.
                 | set_speed - Sets robot speed multiplier (1..10).
@@ -59,16 +59,16 @@ class TrajectoryBuilder:
                 | emergency_stop - Adds stop command.
     '''
 
-    _plan: MotionPlan
+    _commands: list[PlanCommand]
 
-    def __init__(self, plan: MotionPlan) -> None:
+    def __init__(self, commands: list[PlanCommand] | None = None) -> None:
         '''
-            Initializes TrajectoryBuilder with target MotionPlan.
+            Initializes TrajectoryBuilder with optional commands list.
 
-            :param plan: Target MotionPlan container.
+            :param commands: Optional mutable accumulator list.
             :exceptions: None.
         '''
-        self._plan = plan
+        self._commands = [] if commands is None else commands
 
     def add_keyframe(self, leg: int, target: FootPosition, duration_ms: int = 200) -> Self:
         '''
@@ -94,13 +94,13 @@ class TrajectoryBuilder:
             :return: Self for chaining.
             :exceptions: None.
         '''
-        c_i16, f_i16, t_i16 = angles.to_tenths()
+        c_i16, f_i16, t_i16 = KinematicsSolver.to_tenths(angles)
         payload: bytes = pack('>BhhhH', leg & 0xFF, c_i16, f_i16, t_i16, duration_ms & 0xFFFF)
         desc: str = (
             f'Joint keyframe leg {leg}: ({angles.coxa:.1f}°, {angles.femur:.1f}°, '
             f'{angles.tibia:.1f}°) over {duration_ms}ms'
         )
-        self._plan.add_command(int(CommandId.QUEUE_KEYFRAME), payload, desc)
+        self._commands.append(PlanCommand(cmd_id=int(CommandId.QUEUE_KEYFRAME), payload=payload, description=desc))
         return self
 
     def set_speed(self, speed: int) -> Self:
@@ -113,7 +113,9 @@ class TrajectoryBuilder:
         '''
         clamped_speed: int = max(1, min(10, speed))
         payload: bytes = pack('>B', clamped_speed)
-        self._plan.add_command(int(CommandId.SET_SPEED), payload, f'Set Speed {clamped_speed}')
+        self._commands.append(
+            PlanCommand(cmd_id=int(CommandId.SET_SPEED), payload=payload, description=f'Set Speed {clamped_speed}')
+        )
         return self
 
     def action_wave(self, count: int = 2) -> Self:
@@ -125,7 +127,9 @@ class TrajectoryBuilder:
             :exceptions: None.
         '''
         payload: bytes = pack('>BB', int(GaitType.HAND_WAVE), count & 0xFF)
-        self._plan.add_command(int(CommandId.GAIT_STEP), payload, f'Wave {count} times')
+        self._commands.append(
+            PlanCommand(cmd_id=int(CommandId.GAIT_STEP), payload=payload, description=f'Wave {count} times')
+        )
         return self
 
     def emergency_stop(self) -> Self:
@@ -135,5 +139,7 @@ class TrajectoryBuilder:
             :return: Self for chaining.
             :exceptions: None.
         '''
-        self._plan.add_command(int(CommandId.STOP), b'', 'Emergency Stop')
+        self._commands.append(
+            PlanCommand(cmd_id=int(CommandId.STOP), payload=b'', description='Emergency Stop')
+        )
         return self
