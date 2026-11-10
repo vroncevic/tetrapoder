@@ -110,6 +110,23 @@ class TetrapoderCommandExecutor:
                     'stdout': f'Compiled {len(plan.commands)} commands ({count} bytes) to {output}',
                     'stderr': '',
                 }
+            case 'run':
+                try:
+                    transport: SerialTransport = SerialTransport(port=port, baudrate=baud)
+                    frame_builder = ProtocolFrameBuilder(CRC8())
+                    success: bool = MotionRunner(frame_builder).execute(plan, transport)
+                    status_str: str = 'executed successfully' if success else 'failed or NACK received'
+                    return {
+                        'returncode': 0 if success else 1,
+                        'stdout': f'Run {gait_name} on {port}: {status_str} ({len(plan.commands)} commands)',
+                        'stderr': '' if success else 'Execution failed or NACK received from robot',
+                    }
+                except RunnerError as exc:
+                    return {
+                        'returncode': 1,
+                        'stdout': '',
+                        'stderr': f'Run failed: {exc}',
+                    }
             case 'ping':
                 try:
                     transport: SerialTransport = SerialTransport(port=port, baudrate=baud)

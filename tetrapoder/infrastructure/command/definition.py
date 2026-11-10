@@ -98,11 +98,11 @@ class TetrapoderCommandDefinition:
             ),
             OptionData(
                 name='--action',
-                help_text='Action to perform: ping, compile, gait',
+                help_text='Action to perform: ping, compile, run, gait',
                 action=None,
                 default='ping',
                 required=False,
-                choices=['ping', 'compile', 'gait'],
+                choices=['ping', 'compile', 'run', 'gait'],
                 nargs=None,
             ),
             OptionData(
