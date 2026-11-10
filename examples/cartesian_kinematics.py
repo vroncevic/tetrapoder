@@ -48,14 +48,15 @@ def main() -> bool:
         :exceptions: None.
     '''
     builder: TrajectoryBuilder = TrajectoryBuilder()
+    solver: KinematicsSolver = KinematicsSolver()
 
     # Step 1: Solve explicit IK for neutral leg position
     target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
     stdout.write(f'Target Cartesian foot position: ({target.x:.1f}, {target.y:.1f}, {target.z:.1f}) mm\n')
 
     for leg_id in range(4):
-        angles: LegAngles = KinematicsSolver.solve(leg=leg_id, target=target)
-        c_i16, f_i16, t_i16 = KinematicsSolver.to_tenths(angles)
+        angles: LegAngles = solver.solve(leg=leg_id, target=target)
+        c_i16, f_i16, t_i16 = solver.to_tenths(angles)
         stdout.write(
             f'  Leg {leg_id}: coxa={angles.coxa:.1f}° ({c_i16}), '
             f'femur={angles.femur:.1f}° ({f_i16}), tibia={angles.tibia:.1f}° ({t_i16})\n'
@@ -68,7 +69,7 @@ def main() -> bool:
     builder.add_keyframe(leg=1, target=FootPosition(x=0.0, y=80.0, z=-50.0), duration_ms=200)
 
     plan: MotionPlan = builder.build()
-    data: bytes = MotionCompiler.compile(plan=plan)
+    data: bytes = MotionCompiler().compile(plan=plan)
     stdout.write(f'Generated {len(plan.commands)} trajectory keyframe commands.\n')
     stdout.write(f'Compiled trajectory binary: {len(data)} bytes.\n')
     return True

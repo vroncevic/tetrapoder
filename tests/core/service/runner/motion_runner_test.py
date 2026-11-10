@@ -135,9 +135,10 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        pong_frame: bytes = ProtocolFrameBuilder.build_frame(int(ResponseId.PONG), b'')
+        runner: MotionRunner = MotionRunner()
+        pong_frame: bytes = ProtocolFrameBuilder().build_frame(int(ResponseId.PONG), b'')
         transport: MockTransport = MockTransport(canned_response=pong_frame)
-        self.assertTrue(MotionRunner.ping(transport))
+        self.assertTrue(runner.ping(transport))
 
     def test_ping_failure(self) -> None:
         '''
@@ -145,8 +146,9 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
+        runner: MotionRunner = MotionRunner()
         transport: MockTransport = MockTransport(canned_response=b'\x00\x00\x00\x00')
-        self.assertFalse(MotionRunner.ping(transport))
+        self.assertFalse(runner.ping(transport))
 
     def test_execute_ack(self) -> None:
         '''
@@ -154,11 +156,12 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        ack_frame: bytes = ProtocolFrameBuilder.build_frame(int(ResponseId.ACK), b'\x00')
+        runner: MotionRunner = MotionRunner()
+        ack_frame: bytes = ProtocolFrameBuilder().build_frame(int(ResponseId.ACK), b'\x00')
         transport: MockTransport = MockTransport(canned_response=ack_frame)
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))
-        self.assertTrue(MotionRunner.execute(plan, transport))
+        self.assertTrue(runner.execute(plan, transport))
 
     def test_execute_nack(self) -> None:
         '''
@@ -166,11 +169,12 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        nack_frame: bytes = ProtocolFrameBuilder.build_frame(int(ResponseId.NACK), b'\x01')
+        runner: MotionRunner = MotionRunner()
+        nack_frame: bytes = ProtocolFrameBuilder().build_frame(int(ResponseId.NACK), b'\x01')
         transport: MockTransport = MockTransport(canned_response=nack_frame)
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))
-        self.assertFalse(MotionRunner.execute(plan, transport))
+        self.assertFalse(runner.execute(plan, transport))
 
 
 if __name__ == '__main__':

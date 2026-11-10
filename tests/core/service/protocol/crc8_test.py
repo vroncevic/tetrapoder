@@ -54,7 +54,8 @@ class TestCRC8(TestCase):
 
             :exceptions: None.
         '''
-        self.assertEqual(CRC8.calculate(b''), 0)
+        crc8: CRC8 = CRC8()
+        self.assertEqual(crc8.calculate(b''), 0)
 
     def test_known_pattern(self) -> None:
         '''
@@ -62,8 +63,9 @@ class TestCRC8(TestCase):
 
             :exceptions: None.
         '''
+        crc8: CRC8 = CRC8()
         data: bytes = b'\x01\x02\x03\x04'
-        crc: int = CRC8.calculate(data)
+        crc: int = crc8.calculate(data)
         self.assertIsInstance(crc, int)
         self.assertGreaterEqual(crc, 0)
         self.assertLessEqual(crc, 255)
@@ -74,9 +76,10 @@ class TestCRC8(TestCase):
 
             :exceptions: None.
         '''
+        crc8: CRC8 = CRC8()
         data: bytes = b'Hello Robot'
-        crc: int = CRC8.calculate(data)
-        self.assertTrue(CRC8.verify(data, crc))
+        crc: int = crc8.calculate(data)
+        self.assertTrue(crc8.verify(data, crc))
 
     def test_verify_failure(self) -> None:
         '''
@@ -84,8 +87,9 @@ class TestCRC8(TestCase):
 
             :exceptions: None.
         '''
+        crc8: CRC8 = CRC8()
         data: bytes = b'Hello Robot'
-        self.assertFalse(CRC8.verify(data, 0xFF))
+        self.assertFalse(crc8.verify(data, 0xFF))
 
 
 if __name__ == '__main__':

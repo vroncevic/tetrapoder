@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from tetrapoder.core.model.motion_plan import MotionPlan
+from tetrapoder.core.model.plan_command import PlanCommand
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -44,7 +45,7 @@ class IMotionCompiler(Protocol):
 
             :methods:
                 | compile - Compiles MotionPlan into contiguous binary byte sequence.
-                | compile_to_file - Compiles and saves byte sequence to binary file.
+                | compile_command - Compiles a single motion command into wire-level frame.
     '''
 
     def compile(self, plan: MotionPlan) -> bytes:
@@ -55,11 +56,10 @@ class IMotionCompiler(Protocol):
             :return: Contiguous bytes representing the wire protocol transmission.
         '''
 
-    def compile_to_file(self, plan: MotionPlan, file_path: str) -> int:
+    def compile_command(self, cmd: PlanCommand) -> bytes:
         '''
-            Compiles plan and writes output directly to binary file.
+            Compiles a single motion command into wire-level binary frame.
 
-            :param plan: Target MotionPlan.
-            :param file_path: Output file path.
-            :return: Number of bytes written.
+            :param cmd: PlanCommand instance to compile.
+            :return: Formatted wire-level frame bytes.
         '''

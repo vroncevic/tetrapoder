@@ -31,6 +31,7 @@ from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
 from tetrapoder.core.service.runner.motion_runner import MotionRunner
 from tetrapoder.infrastructure.command.idefinition import ICommandDefinition
+from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
 from tetrapoder.infrastructure.transport.serial_transport import SerialTransport
 
 __author__ = 'Vladimir Roncevic'
@@ -99,7 +100,8 @@ class TetrapoderCommandExecutor:
 
         match action:
             case 'compile':
-                count: int = MotionCompiler.compile_to_file(plan, output)
+                data: bytes = MotionCompiler().compile(plan)
+                count: int = BinaryWriter().write(output, data)
                 return {
                     'returncode': 0,
                     'stdout': f'Compiled {len(plan.commands)} commands ({count} bytes) to {output}',
@@ -108,7 +110,7 @@ class TetrapoderCommandExecutor:
             case 'ping':
                 try:
                     transport: SerialTransport = SerialTransport(port=port, baudrate=baud)
-                    pong: bool = MotionRunner.ping(transport)
+                    pong: bool = MotionRunner().ping(transport)
                     status_str: str = 'PONG received' if pong else 'Ping failed or timed out'
                     return {
                         'returncode': 0 if pong else 1,

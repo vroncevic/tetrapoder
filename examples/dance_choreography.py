@@ -30,6 +30,7 @@ from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
 from tetrapoder.core.service.trajectory.choreography_builder import ChoreographyBuilder
 from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
+from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -73,13 +74,13 @@ def main() -> bool:
 
     # 3. Create immutable MotionPlan and compile to binary wire protocol
     plan: MotionPlan = MotionPlan(commands=tuple(commands))
-    binary_data: bytes = MotionCompiler.compile(plan=plan)
+    binary_data: bytes = MotionCompiler().compile(plan=plan)
     stdout.write(f'Generated {len(plan.commands)} motion commands.\n')
     stdout.write(f'Compiled binary size: {len(binary_data)} bytes.\n')
     stdout.write(f'Raw binary packet stream (hex):\n{binary_data.hex()}\n')
 
-    # Save to file
-    MotionCompiler.compile_to_file(plan=plan, file_path='dance_sequence.bin')
+    # Save to file via infrastructure storage adapter
+    BinaryWriter().write(file_path='dance_sequence.bin', data=binary_data)
     stdout.write('Compiled to dance_sequence.bin successfully.\n')
     return True
 

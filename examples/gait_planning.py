@@ -55,7 +55,7 @@ def main() -> bool:
     builder.sit()
 
     plan: MotionPlan = builder.build()
-    data: bytes = MotionCompiler.compile(plan=plan)
+    data: bytes = MotionCompiler().compile(plan=plan)
 
     stdout.write(f'Gait planning generated {len(plan.commands)} commands.\n')
     for idx, cmd in enumerate(plan.commands, 1):

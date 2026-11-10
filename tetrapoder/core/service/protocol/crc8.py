@@ -49,8 +49,7 @@ class CRC8:
 
     POLYNOMIAL: ClassVar[int] = 0x07
 
-    @classmethod
-    def calculate(cls, data: bytes) -> int:
+    def calculate(self, data: bytes) -> int:
         '''
             Computes CRC-8 checksum over input bytes.
 
@@ -63,13 +62,12 @@ class CRC8:
             crc ^= byte
             for _ in range(8):
                 if (crc & 0x80) != 0:
-                    crc = ((crc << 1) ^ cls.POLYNOMIAL) & 0xFF
+                    crc = ((crc << 1) ^ self.POLYNOMIAL) & 0xFF
                 else:
                     crc = (crc << 1) & 0xFF
         return crc
 
-    @classmethod
-    def verify(cls, data: bytes, expected_crc: int) -> bool:
+    def verify(self, data: bytes, expected_crc: int) -> bool:
         '''
             Verifies that data matches the expected CRC-8 checksum.
 
@@ -78,4 +76,4 @@ class CRC8:
             :return: True if checksum matches, False otherwise.
             :exceptions: None.
         '''
-        return cls.calculate(data) == (expected_crc & 0xFF)
+        return self.calculate(data) == (expected_crc & 0xFF)

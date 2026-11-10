@@ -60,8 +60,7 @@ class KinematicsSolver:
     FEMUR_LENGTH: ClassVar[float] = 55.0
     TIBIA_LENGTH: ClassVar[float] = 55.0
 
-    @classmethod
-    def cartesian_to_polar(cls, x: float, y: float, z: float) -> tuple[float, float, float]:
+    def cartesian_to_polar(self, x: float, y: float, z: float) -> tuple[float, float, float]:
         '''
             Transforms Cartesian coordinate into polar leg angles (alpha, beta, gamma).
 
@@ -73,11 +72,11 @@ class KinematicsSolver:
                 | KinematicsError: If target coordinates exceed physical leg reach.
         '''
         dist_xy: float = sqrt(x * x + y * y)
-        d_val: float = dist_xy - cls.COXA_LENGTH
+        d_val: float = dist_xy - self.COXA_LENGTH
         l_eff: float = sqrt(d_val * d_val + z * z)
 
-        femur: float = cls.FEMUR_LENGTH
-        tibia: float = cls.TIBIA_LENGTH
+        femur: float = self.FEMUR_LENGTH
+        tibia: float = self.TIBIA_LENGTH
         reach_max: float = femur + tibia
         reach_min: float = abs(femur - tibia)
 
@@ -97,8 +96,7 @@ class KinematicsSolver:
 
         return (alpha, beta, gamma)
 
-    @classmethod
-    def polar_to_servo(cls, leg: int, alpha: float, beta: float, gamma: float) -> LegAngles:
+    def polar_to_servo(self, leg: int, alpha: float, beta: float, gamma: float) -> LegAngles:
         '''
             Transforms polar link angles to servo horn degrees.
 
@@ -123,8 +121,7 @@ class KinematicsSolver:
             tibia=max(0.0, min(180.0, tibia_deg)),
         )
 
-    @classmethod
-    def solve(cls, leg: int, target: FootPosition) -> LegAngles:
+    def solve(self, leg: int, target: FootPosition) -> LegAngles:
         '''
             Solves full inverse kinematics mapping 3D Cartesian target to joint angles.
 
@@ -137,11 +134,10 @@ class KinematicsSolver:
         if leg not in (0, 1, 2, 3):
             raise KinematicsError(f'Invalid leg index {leg}: must be 0, 1, 2, or 3')
 
-        alpha, beta, gamma = cls.cartesian_to_polar(target.x, target.y, target.z)
-        return cls.polar_to_servo(leg, alpha, beta, gamma)
+        alpha, beta, gamma = self.cartesian_to_polar(target.x, target.y, target.z)
+        return self.polar_to_servo(leg, alpha, beta, gamma)
 
-    @classmethod
-    def to_tenths(cls, angles: LegAngles) -> tuple[int, int, int]:
+    def to_tenths(self, angles: LegAngles) -> tuple[int, int, int]:
         '''
             Converts joint angles to integer tenths of a degree.
 

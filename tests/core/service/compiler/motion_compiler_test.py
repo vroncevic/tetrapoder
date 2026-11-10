@@ -21,12 +21,9 @@ Info
 
 from __future__ import annotations
 
-from os import remove
-from os.path import exists
 from unittest import TestCase, main
 
 from tetrapoder.core.model.command_id import CommandId
-from tetrapoder.core.model.exceptions.compiler_error import CompilerError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
@@ -50,8 +47,8 @@ class TestMotionCompiler(TestCase):
 
             :methods:
                 | test_compile_bytes - Verifies compilation of motion plan into bytes.
-                | test_compile_to_file - Verifies compilation and file export.
-                | test_compile_error - Verifies exception raised on file write failure.
+                | test_compile_command - Verifies compiling single motion command.
+                | test_compile_empty_plan - Verifies compilation of empty plan produces empty bytes.
     '''
 
     def test_compile_bytes(self) -> None:
@@ -60,39 +57,35 @@ class TestMotionCompiler(TestCase):
 
             :exceptions: None.
         '''
+        compiler: MotionCompiler = MotionCompiler()
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))
-        data: bytes = MotionCompiler.compile(plan)
+        data: bytes = compiler.compile(plan)
         self.assertEqual(len(data), 4)
         self.assertEqual(data[0], ProtocolFrameBuilder.SYNC_BYTE)
 
-    def test_compile_to_file(self) -> None:
+    def test_compile_command(self) -> None:
         '''
-            Verifies compilation and file export.
+            Verifies compiling single motion command.
 
             :exceptions: None.
         '''
-        file_path: str = '/tmp/test_plan.bin'
+        compiler: MotionCompiler = MotionCompiler()
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
-        plan: MotionPlan = MotionPlan(commands=(cmd,))
+        frame: bytes = compiler.compile_command(cmd)
+        self.assertEqual(len(frame), 4)
+        self.assertEqual(frame[0], ProtocolFrameBuilder.SYNC_BYTE)
 
-        try:
-            bytes_written: int = MotionCompiler.compile_to_file(plan, file_path)
-            self.assertEqual(bytes_written, 4)
-            self.assertTrue(exists(file_path))
-        finally:
-            if exists(file_path):
-                remove(file_path)
-
-    def test_compile_error(self) -> None:
+    def test_compile_empty_plan(self) -> None:
         '''
-            Verifies exception raised on file write failure.
+            Verifies compilation of empty plan produces empty bytes.
 
             :exceptions: None.
         '''
+        compiler: MotionCompiler = MotionCompiler()
         plan: MotionPlan = MotionPlan(commands=())
-        with self.assertRaises(CompilerError):
-            MotionCompiler.compile_to_file(plan, '/non_existent_directory_xyz/test.bin')
+        data: bytes = compiler.compile(plan)
+        self.assertEqual(len(data), 0)
 
 
 if __name__ == '__main__':

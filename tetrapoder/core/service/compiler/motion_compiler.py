@@ -16,13 +16,14 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Motion plan binary compiler producing byte streams and flashable binary files.
+    Motion plan binary compiler producing contiguous wire-protocol byte streams.
 '''
 
 from __future__ import annotations
 
-from tetrapoder.core.model.exceptions.compiler_error import CompilerError
 from tetrapoder.core.model.motion_plan import MotionPlan
+from tetrapoder.core.model.plan_command import PlanCommand
+from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
@@ -42,13 +43,36 @@ class MotionCompiler:
 
         It defines:
 
+            :attributes:
+                | _frame_builder - Injected protocol frame serialization provider.
             :methods:
+                | __init__ - Initializes MotionCompiler with frame builder dependency.
                 | compile - Compiles MotionPlan into contiguous binary byte sequence.
-                | compile_to_file - Compiles and saves byte sequence to binary file.
+                | compile_command - Compiles a single motion command into wire-level frame.
     '''
 
-    @classmethod
-    def compile(cls, plan: MotionPlan) -> bytes:
+    _frame_builder: IProtocolFrameBuilder
+
+    def __init__(self, frame_builder: IProtocolFrameBuilder | None = None) -> None:
+        '''
+            Initializes MotionCompiler with frame builder provider.
+
+            :param frame_builder: Optional IProtocolFrameBuilder implementation.
+            :exceptions: None.
+        '''
+        self._frame_builder = ProtocolFrameBuilder() if frame_builder is None else frame_builder
+
+    def compile_command(self, cmd: PlanCommand) -> bytes:
+        '''
+            Compiles a single motion command into wire-level binary frame.
+
+            :param cmd: PlanCommand instance to compile.
+            :return: Formatted wire-level frame bytes.
+            :exceptions: None.
+        '''
+        return self._frame_builder.build_frame(cmd.cmd_id, cmd.payload)
+
+    def compile(self, plan: MotionPlan) -> bytes:
         '''
             Compiles all commands in the plan into binary frames with CRC-8 checksums.
 
@@ -58,25 +82,5 @@ class MotionCompiler:
         '''
         stream: bytearray = bytearray()
         for cmd in plan.commands:
-            frame: bytes = ProtocolFrameBuilder.build_frame(cmd.cmd_id, cmd.payload)
-            stream.extend(frame)
+            stream.extend(self.compile_command(cmd))
         return bytes(stream)
-
-    @classmethod
-    def compile_to_file(cls, plan: MotionPlan, file_path: str) -> int:
-        '''
-            Compiles plan and writes output directly to binary file.
-
-            :param plan: Target MotionPlan.
-            :param file_path: Absolute or relative output file path.
-            :return: Number of bytes written.
-            :exceptions:
-                | CompilerError: If file writing fails due to I/O error.
-        '''
-        data: bytes = cls.compile(plan)
-        try:
-            with open(file_path, 'wb') as file_handle:
-                file_handle.write(data)
-            return len(data)
-        except OSError as exc:
-            raise CompilerError(f'Failed to write binary plan to {file_path}: {exc}') from exc

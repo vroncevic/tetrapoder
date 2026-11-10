@@ -57,8 +57,9 @@ class TestKinematicsSolver(TestCase):
 
             :exceptions: None.
         '''
+        solver: KinematicsSolver = KinematicsSolver()
         target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
-        angles: LegAngles = KinematicsSolver.solve(0, target)
+        angles: LegAngles = solver.solve(0, target)
         self.assertGreaterEqual(angles.coxa, 0.0)
         self.assertLessEqual(angles.coxa, 180.0)
         self.assertGreaterEqual(angles.femur, 0.0)
@@ -72,9 +73,10 @@ class TestKinematicsSolver(TestCase):
 
             :exceptions: None.
         '''
+        solver: KinematicsSolver = KinematicsSolver()
         target: FootPosition = FootPosition(x=0.0, y=500.0, z=-500.0)
         with self.assertRaises(KinematicsError):
-            KinematicsSolver.solve(0, target)
+            solver.solve(0, target)
 
     def test_invalid_leg_index(self) -> None:
         '''
@@ -82,9 +84,10 @@ class TestKinematicsSolver(TestCase):
 
             :exceptions: None.
         '''
+        solver: KinematicsSolver = KinematicsSolver()
         target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
         with self.assertRaises(KinematicsError):
-            KinematicsSolver.solve(4, target)
+            solver.solve(4, target)
 
     def test_to_tenths(self) -> None:
         '''
@@ -92,8 +95,9 @@ class TestKinematicsSolver(TestCase):
 
             :exceptions: None.
         '''
+        solver: KinematicsSolver = KinematicsSolver()
         angles: LegAngles = LegAngles(coxa=90.0, femur=45.5, tibia=120.3)
-        self.assertEqual(KinematicsSolver.to_tenths(angles), (900, 455, 1203))
+        self.assertEqual(solver.to_tenths(angles), (900, 455, 1203))
 
 
 if __name__ == '__main__':

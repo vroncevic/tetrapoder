@@ -22,8 +22,10 @@ Info
 from __future__ import annotations
 
 from tetrapoder.core.model.command_id import CommandId
+from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.response_id import ResponseId
+from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.itransport import ITransport
 
@@ -44,13 +46,26 @@ class MotionRunner:
 
         It defines:
 
+            :attributes:
+                | _frame_builder - Injected protocol frame serialization provider.
             :methods:
+                | __init__ - Initializes MotionRunner with frame builder dependency.
                 | execute - Streams motion plan frames with ACK/NACK validation.
                 | ping - Verifies robot heartbeat connectivity.
     '''
 
-    @classmethod
-    def execute(cls, plan: MotionPlan, transport: ITransport) -> bool:
+    _frame_builder: IProtocolFrameBuilder
+
+    def __init__(self, frame_builder: IProtocolFrameBuilder | None = None) -> None:
+        '''
+            Initializes MotionRunner with frame builder dependency.
+
+            :param frame_builder: Optional IProtocolFrameBuilder provider.
+            :exceptions: None.
+        '''
+        self._frame_builder = ProtocolFrameBuilder() if frame_builder is None else frame_builder
+
+    def execute(self, plan: MotionPlan, transport: ITransport) -> bool:
         '''
             Executes compiled motion plan commands over hardware transport.
 
@@ -63,18 +78,21 @@ class MotionRunner:
             transport.open()
 
         for cmd in plan.commands:
-            frame: bytes = ProtocolFrameBuilder.build_frame(cmd.cmd_id, cmd.payload)
+            frame: bytes = self._frame_builder.build_frame(cmd.cmd_id, cmd.payload)
             transport.write(frame)
 
             response_bytes: bytes = transport.read(5)
-            unpacked = ProtocolFrameBuilder.unpack_frame(response_bytes)
-            if unpacked is None or unpacked[0] != int(ResponseId.ACK):
+            try:
+                msg_id, _ = self._frame_builder.unpack_frame(response_bytes)
+            except ProtocolError:
+                return False
+
+            if msg_id != int(ResponseId.ACK):
                 return False
 
         return True
 
-    @classmethod
-    def ping(cls, transport: ITransport) -> bool:
+    def ping(self, transport: ITransport) -> bool:
         '''
             Tests serial connectivity with robot heartbeat.
 
@@ -85,9 +103,13 @@ class MotionRunner:
         if not transport.is_open():
             transport.open()
 
-        frame: bytes = ProtocolFrameBuilder.build_frame(int(CommandId.PING), b'')
+        frame: bytes = self._frame_builder.build_frame(int(CommandId.PING), b'')
         transport.write(frame)
 
         resp: bytes = transport.read(4)
-        unpacked = ProtocolFrameBuilder.unpack_frame(resp)
-        return unpacked is not None and unpacked[0] == int(ResponseId.PONG)
+        try:
+            msg_id, _ = self._frame_builder.unpack_frame(resp)
+        except ProtocolError:
+            return False
+
+        return msg_id == int(ResponseId.PONG)

@@ -54,10 +54,10 @@ class IProtocolFrameBuilder(Protocol):
             :return: Formatted wire-level frame bytes.
         '''
 
-    def unpack_frame(self, data: bytes) -> tuple[int, bytes] | None:
+    def unpack_frame(self, data: bytes) -> tuple[int, bytes]:
         '''
             Unpacks and verifies CRC-8 on an incoming frame.
 
             :param data: Wire bytes starting with SYNC byte.
-            :return: Tuple of (msg_id, payload) if valid, None if invalid.
+            :return: Tuple of (msg_id, payload).
         '''

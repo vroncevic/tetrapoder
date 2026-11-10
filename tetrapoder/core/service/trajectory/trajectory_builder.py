@@ -29,6 +29,7 @@ from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
+from tetrapoder.core.service.kinematics.ikinematics_solver import IKinematicsSolver
 from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
@@ -50,23 +51,31 @@ class TrajectoryBuilder:
 
             :attributes:
                 | _commands - Mutable accumulator list of plan commands.
+                | _solver - Injected kinematics calculation solver.
             :methods:
-                | __init__ - Initializes TrajectoryBuilder with optional commands list.
+                | __init__ - Initializes TrajectoryBuilder with optional commands and solver.
                 | add_keyframe - Solves IK and enqueues joint keyframe from Cartesian coordinates.
                 | add_joint_keyframe - Directly enqueues joint angles in degrees.
                 | build - Constructs immutable MotionPlan from accumulated commands.
     '''
 
     _commands: list[PlanCommand]
+    _solver: IKinematicsSolver
 
-    def __init__(self, commands: list[PlanCommand] | None = None) -> None:
+    def __init__(
+        self,
+        commands: list[PlanCommand] | None = None,
+        solver: IKinematicsSolver | None = None,
+    ) -> None:
         '''
-            Initializes TrajectoryBuilder with optional commands list.
+            Initializes TrajectoryBuilder with optional commands list and solver.
 
             :param commands: Optional mutable accumulator list.
+            :param solver: Optional IKinematicsSolver provider.
             :exceptions: None.
         '''
         self._commands = [] if commands is None else commands
+        self._solver = KinematicsSolver() if solver is None else solver
 
     def add_keyframe(self, leg: int, target: FootPosition, duration_ms: int = 200) -> Self:
         '''
@@ -79,7 +88,7 @@ class TrajectoryBuilder:
             :exceptions: None.
         '''
         target_leg: int = 0 if leg == 0xFF else (leg & 0x03)
-        angles: LegAngles = KinematicsSolver.solve(target_leg, target)
+        angles: LegAngles = self._solver.solve(target_leg, target)
         return self.add_joint_keyframe(leg, angles, duration_ms)
 
     def add_joint_keyframe(self, leg: int, angles: LegAngles, duration_ms: int = 200) -> Self:
@@ -92,7 +101,7 @@ class TrajectoryBuilder:
             :return: Self for chaining.
             :exceptions: None.
         '''
-        c_i16, f_i16, t_i16 = KinematicsSolver.to_tenths(angles)
+        c_i16, f_i16, t_i16 = self._solver.to_tenths(angles)
         payload: bytes = pack('>BhhhH', leg & 0xFF, c_i16, f_i16, t_i16, duration_ms & 0xFFFF)
         desc: str = (
             f'Joint keyframe leg {leg}: ({angles.coxa:.1f}°, {angles.femur:.1f}°, '

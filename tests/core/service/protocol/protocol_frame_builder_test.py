@@ -46,7 +46,8 @@ class TestProtocolFrameBuilder(TestCase):
             :methods:
                 | test_build_and_unpack - Verifies packing and unpacking valid frames.
                 | test_payload_exceeded - Verifies exception when payload exceeds limit.
-                | test_corrupt_crc - Verifies unpacking fails on CRC corruption.
+                | test_corrupt_crc - Verifies unpacking raises ProtocolError on CRC corruption.
+                | test_short_frame - Verifies unpacking raises ProtocolError on short frame.
     '''
 
     def test_build_and_unpack(self) -> None:
@@ -55,16 +56,15 @@ class TestProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
-        frame: bytes = ProtocolFrameBuilder.build_frame(int(CommandId.PING), b'')
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        frame: bytes = builder.build_frame(int(CommandId.PING), b'')
         self.assertEqual(len(frame), 4)
-        self.assertEqual(frame[0], ProtocolFrameBuilder.SYNC_BYTE)
+        self.assertEqual(frame[0], builder.SYNC_BYTE)
         self.assertEqual(frame[1], int(CommandId.PING))
 
-        unpacked = ProtocolFrameBuilder.unpack_frame(frame)
-        self.assertIsNotNone(unpacked)
-        if unpacked is not None:
-            self.assertEqual(unpacked[0], int(CommandId.PING))
-            self.assertEqual(unpacked[1], b'')
+        msg_id, payload = builder.unpack_frame(frame)
+        self.assertEqual(msg_id, int(CommandId.PING))
+        self.assertEqual(payload, b'')
 
     def test_payload_exceeded(self) -> None:
         '''
@@ -72,18 +72,31 @@ class TestProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
         with self.assertRaises(ProtocolError):
-            ProtocolFrameBuilder.build_frame(0x01, b'x' * 17)
+            builder.build_frame(0x01, b'x' * 17)
 
     def test_corrupt_crc(self) -> None:
         '''
-            Verifies unpacking fails on CRC corruption.
+            Verifies unpacking raises ProtocolError on CRC corruption.
 
             :exceptions: None.
         '''
-        frame: bytes = bytearray(ProtocolFrameBuilder.build_frame(0x01, b'\x05'))
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        frame: bytearray = bytearray(builder.build_frame(0x01, b'\x05'))
         corrupt_frame: bytes = bytes(frame[:-1] + bytes([frame[-1] ^ 0xFF]))
-        self.assertIsNone(ProtocolFrameBuilder.unpack_frame(corrupt_frame))
+        with self.assertRaises(ProtocolError):
+            builder.unpack_frame(corrupt_frame)
+
+    def test_short_frame(self) -> None:
+        '''
+            Verifies unpacking raises ProtocolError on short frame.
+
+            :exceptions: None.
+        '''
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        with self.assertRaises(ProtocolError):
+            builder.unpack_frame(b'\xAA\x01')
 
 
 if __name__ == '__main__':
