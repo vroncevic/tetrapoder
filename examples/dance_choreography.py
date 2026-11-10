@@ -33,7 +33,7 @@ from tetrapoder.core.service.gait.builder import GaitPlanBuilder
 from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 from tetrapoder.core.service.trajectory.builder import TrajectoryBuilder
-from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
+from tetrapoder.infrastructure.storage.writer import BinaryWriter
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

@@ -33,7 +33,7 @@ from tetrapoder.core.service.crc8.crc import CRC8
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.runner import MotionRunner
 from tetrapoder.infrastructure.command.idefinition import ICommandDefinition
-from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
+from tetrapoder.infrastructure.storage.writer import BinaryWriter
 from tetrapoder.infrastructure.transport.serial import SerialTransport
 
 __author__ = 'Vladimir Roncevic'

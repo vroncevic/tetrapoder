@@ -2,7 +2,7 @@
 
 '''
 Module
-    ibinary_writer.py
+    writer.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,12 +16,14 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Structural interface for binary filesystem storage writers.
+    Binary filesystem file writer adapter.
 '''
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
+from os.path import exists as file_exists
+
+from tetrapoder.core.model.exceptions.compiler_error import CompilerError
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -33,10 +35,10 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@runtime_checkable
-class IBinaryWriter(Protocol):
+class BinaryWriter:
     '''
-        Structural protocol defining binary filesystem persistence.
+        Defines class BinaryWriter implementing IBinaryWriter structurally.
+        Persists binary data streams directly to filesystem files.
 
         It defines:
 
@@ -52,7 +54,15 @@ class IBinaryWriter(Protocol):
             :param file_path: Target filesystem file path.
             :param data: Binary byte sequence to persist.
             :return: Number of bytes written to the file.
+            :exceptions:
+                | CompilerError: If file writing fails due to an I/O error.
         '''
+        try:
+            with open(file_path, 'wb') as file_handle:
+                file_handle.write(data)
+            return len(data)
+        except OSError as exc:
+            raise CompilerError(f'Failed to write binary data to {file_path}: {exc}') from exc
 
     def exists(self, file_path: str) -> bool:
         '''
@@ -60,4 +70,6 @@ class IBinaryWriter(Protocol):
 
             :param file_path: Target filesystem file path.
             :return: True if file exists, False otherwise.
+            :exceptions: None.
         '''
+        return file_exists(file_path)

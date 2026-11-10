@@ -2,7 +2,7 @@
 
 '''
 Module
-    binary_writer_test.py
+    writer_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -26,7 +26,7 @@ from os.path import exists
 from unittest import TestCase, main
 
 from tetrapoder.core.model.exceptions.compiler_error import CompilerError
-from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
+from tetrapoder.infrastructure.storage.writer import BinaryWriter
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -56,7 +56,7 @@ class TestBinaryWriter(TestCase):
 
             :exceptions: None.
         '''
-        file_path: str = '/tmp/test_binary_writer.bin'
+        file_path: str = '/tmp/test_writer.bin'
         writer: BinaryWriter = BinaryWriter()
         data: bytes = b'\xAA\x01\x02\x03'
 

@@ -2,7 +2,7 @@
 
 '''
 Module
-    ibinary_writer_test.py
+    iwriter.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,15 +16,12 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for IBinaryWriter structural protocol.
+    Structural interface for binary filesystem storage writers.
 '''
 
 from __future__ import annotations
 
-from unittest import TestCase, main
-
-from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
-from tetrapoder.infrastructure.storage.ibinary_writer import IBinaryWriter
+from typing import Protocol, runtime_checkable
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -36,25 +33,31 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestIBinaryWriter(TestCase):
+@runtime_checkable
+class IBinaryWriter(Protocol):
     '''
-        Test cases verifying IBinaryWriter protocol conformance.
+        Structural protocol defining binary filesystem persistence.
 
         It defines:
 
             :methods:
-                | test_structural_conformance - Verifies BinaryWriter satisfies IBinaryWriter.
+                | write - Writes raw binary byte sequence to target file path.
+                | exists - Checks whether target filesystem file path exists.
     '''
 
-    def test_structural_conformance(self) -> None:
+    def write(self, file_path: str, data: bytes) -> int:
         '''
-            Verifies BinaryWriter satisfies IBinaryWriter.
+            Writes binary byte sequence to the specified file path.
 
-            :exceptions: None.
+            :param file_path: Target filesystem file path.
+            :param data: Binary byte sequence to persist.
+            :return: Number of bytes written to the file.
         '''
-        writer: BinaryWriter = BinaryWriter()
-        self.assertTrue(isinstance(writer, IBinaryWriter))
 
+    def exists(self, file_path: str) -> bool:
+        '''
+            Checks whether target filesystem file path exists.
 
-if __name__ == '__main__':
-    main()
+            :param file_path: Target filesystem file path.
+            :return: True if file exists, False otherwise.
+        '''
