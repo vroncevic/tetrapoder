@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
 from tetrapoder.core.service.trajectory.itrajectory_builder import ITrajectoryBuilder
 from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
 
@@ -52,7 +53,7 @@ class TestITrajectoryBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: TrajectoryBuilder = TrajectoryBuilder()
+        builder: TrajectoryBuilder = TrajectoryBuilder(KinematicsSolver(), [])
         self.assertTrue(isinstance(builder, ITrajectoryBuilder))
 
 

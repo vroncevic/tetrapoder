@@ -25,6 +25,8 @@ from unittest import TestCase, main
 
 from tetrapoder.core.service.compiler.imotion_compiler import IMotionCompiler
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
+from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -52,7 +54,7 @@ class TestIMotionCompiler(TestCase):
 
             :exceptions: None.
         '''
-        self.assertTrue(isinstance(MotionCompiler(), IMotionCompiler))
+        self.assertTrue(isinstance(MotionCompiler(ProtocolFrameBuilder(CRC8())), IMotionCompiler))
 
 
 if __name__ == '__main__':

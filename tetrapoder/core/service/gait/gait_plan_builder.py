@@ -49,7 +49,7 @@ class GaitPlanBuilder:
             :attributes:
                 | _commands - Mutable accumulator list of plan commands.
             :methods:
-                | __init__ - Initializes GaitPlanBuilder with optional commands list.
+                | __init__ - Initializes GaitPlanBuilder with commands accumulator list.
                 | stand - Adds stand posture command.
                 | sit - Adds sit posture command.
                 | walk - Adds walking step command (forward/backward).
@@ -59,14 +59,14 @@ class GaitPlanBuilder:
 
     _commands: list[PlanCommand]
 
-    def __init__(self, commands: list[PlanCommand] | None = None) -> None:
+    def __init__(self, commands: list[PlanCommand]) -> None:
         '''
-            Initializes GaitPlanBuilder with optional commands list.
+            Initializes GaitPlanBuilder with commands accumulator list.
 
-            :param commands: Optional mutable accumulator list.
+            :param commands: Injected mutable accumulator list.
             :exceptions: None.
         '''
-        self._commands = [] if commands is None else commands
+        self._commands = commands
 
     def stand(self) -> Self:
         '''
@@ -92,6 +92,7 @@ class GaitPlanBuilder:
         self._commands.append(
             PlanCommand(cmd_id=int(CommandId.GAIT_STEP), payload=payload, description='Sit Down')
         )
+
         return self
 
     def walk(self, steps: int = 1, backward: bool = False) -> Self:
@@ -109,6 +110,7 @@ class GaitPlanBuilder:
         self._commands.append(
             PlanCommand(cmd_id=int(CommandId.GAIT_STEP), payload=payload, description=f'{name} {steps} steps')
         )
+
         return self
 
     def turn(self, steps: int = 1, to_right: bool = False) -> Self:
@@ -126,6 +128,7 @@ class GaitPlanBuilder:
         self._commands.append(
             PlanCommand(cmd_id=int(CommandId.GAIT_STEP), payload=payload, description=f'{name} {steps} steps')
         )
+
         return self
 
     def build(self) -> MotionPlan:

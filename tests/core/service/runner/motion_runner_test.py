@@ -27,6 +27,7 @@ from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.model.response_id import ResponseId
+from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.motion_runner import MotionRunner
 
@@ -136,8 +137,9 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        runner: MotionRunner = MotionRunner()
-        pong_frame: bytes = ProtocolFrameBuilder().build_frame(int(ResponseId.PONG), b'')
+        frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+        runner: MotionRunner = MotionRunner(frame_builder)
+        pong_frame: bytes = frame_builder.build_frame(int(ResponseId.PONG), b'')
         transport: MockTransport = MockTransport(canned_response=pong_frame)
         self.assertTrue(runner.ping(transport))
 
@@ -147,7 +149,8 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        runner: MotionRunner = MotionRunner()
+        frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+        runner: MotionRunner = MotionRunner(frame_builder)
         transport: MockTransport = MockTransport(canned_response=b'\x00\x00\x00\x00')
         self.assertFalse(runner.ping(transport))
 
@@ -157,8 +160,9 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        runner: MotionRunner = MotionRunner()
-        ack_frame: bytes = ProtocolFrameBuilder().build_frame(int(ResponseId.ACK), b'\x00')
+        frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+        runner: MotionRunner = MotionRunner(frame_builder)
+        ack_frame: bytes = frame_builder.build_frame(int(ResponseId.ACK), b'\x00')
         transport: MockTransport = MockTransport(canned_response=ack_frame)
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))
@@ -170,8 +174,9 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        runner: MotionRunner = MotionRunner()
-        nack_frame: bytes = ProtocolFrameBuilder().build_frame(int(ResponseId.NACK), b'\x01')
+        frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+        runner: MotionRunner = MotionRunner(frame_builder)
+        nack_frame: bytes = frame_builder.build_frame(int(ResponseId.NACK), b'\x01')
         transport: MockTransport = MockTransport(canned_response=nack_frame)
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))
@@ -183,7 +188,8 @@ class TestMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        runner: MotionRunner = MotionRunner()
+        frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+        runner: MotionRunner = MotionRunner(frame_builder)
         transport: MockTransport = MockTransport(canned_response=b'\xFF\xFF\xFF\xFF')
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))

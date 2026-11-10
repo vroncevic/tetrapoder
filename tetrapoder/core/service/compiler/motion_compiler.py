@@ -24,7 +24,6 @@ from __future__ import annotations
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -53,14 +52,14 @@ class MotionCompiler:
 
     _frame_builder: IProtocolFrameBuilder
 
-    def __init__(self, frame_builder: IProtocolFrameBuilder | None = None) -> None:
+    def __init__(self, frame_builder: IProtocolFrameBuilder) -> None:
         '''
             Initializes MotionCompiler with frame builder provider.
 
-            :param frame_builder: Optional IProtocolFrameBuilder implementation.
+            :param frame_builder: Injected IProtocolFrameBuilder implementation.
             :exceptions: None.
         '''
-        self._frame_builder = ProtocolFrameBuilder() if frame_builder is None else frame_builder
+        self._frame_builder = frame_builder
 
     def compile_command(self, cmd: PlanCommand) -> bytes:
         '''
@@ -81,6 +80,8 @@ class MotionCompiler:
             :exceptions: None.
         '''
         stream: bytearray = bytearray()
+
         for cmd in plan.commands:
             stream.extend(self.compile_command(cmd))
+
         return bytes(stream)

@@ -29,6 +29,8 @@ from tetrapoder.core.model.exceptions.runner_error import RunnerError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
+from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.motion_runner import MotionRunner
 from tetrapoder.infrastructure.command.idefinition import ICommandDefinition
 from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
@@ -84,7 +86,7 @@ class TetrapoderCommandExecutor:
         gait_name: str = str(params.get('gait', 'stand'))
         output: str = str(params.get('output', 'motion.bin'))
 
-        builder: GaitPlanBuilder = GaitPlanBuilder()
+        builder: GaitPlanBuilder = GaitPlanBuilder([])
 
         match gait_name:
             case 'sit':
@@ -100,7 +102,8 @@ class TetrapoderCommandExecutor:
 
         match action:
             case 'compile':
-                data: bytes = MotionCompiler().compile(plan)
+                frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+                data: bytes = MotionCompiler(frame_builder).compile(plan)
                 count: int = BinaryWriter().write(output, data)
                 return {
                     'returncode': 0,
@@ -110,7 +113,8 @@ class TetrapoderCommandExecutor:
             case 'ping':
                 try:
                     transport: SerialTransport = SerialTransport(port=port, baudrate=baud)
-                    pong: bool = MotionRunner().ping(transport)
+                    frame_builder = ProtocolFrameBuilder(CRC8())
+                    pong: bool = MotionRunner(frame_builder).ping(transport)
                     status_str: str = 'PONG received' if pong else 'Ping failed or timed out'
                     return {
                         'returncode': 0 if pong else 1,

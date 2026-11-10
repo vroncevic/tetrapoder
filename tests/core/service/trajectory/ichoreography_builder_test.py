@@ -52,7 +52,7 @@ class TestIChoreographyBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ChoreographyBuilder = ChoreographyBuilder()
+        builder: ChoreographyBuilder = ChoreographyBuilder([])
         self.assertTrue(isinstance(builder, IChoreographyBuilder))
 
 

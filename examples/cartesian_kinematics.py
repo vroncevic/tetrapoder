@@ -28,6 +28,8 @@ from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
+from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
@@ -47,8 +49,8 @@ def main() -> bool:
         :return: True if compiled successfully.
         :exceptions: None.
     '''
-    builder: TrajectoryBuilder = TrajectoryBuilder()
     solver: KinematicsSolver = KinematicsSolver()
+    builder: TrajectoryBuilder = TrajectoryBuilder(solver=solver, commands=[])
 
     # Step 1: Solve explicit IK for neutral leg position
     target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
@@ -69,7 +71,9 @@ def main() -> bool:
     builder.add_keyframe(leg=1, target=FootPosition(x=0.0, y=80.0, z=-50.0), duration_ms=200)
 
     plan: MotionPlan = builder.build()
-    data: bytes = MotionCompiler().compile(plan=plan)
+    frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+    compiler: MotionCompiler = MotionCompiler(frame_builder=frame_builder)
+    data: bytes = compiler.compile(plan=plan)
     stdout.write(f'Generated {len(plan.commands)} trajectory keyframe commands.\n')
     stdout.write(f'Compiled trajectory binary: {len(data)} bytes.\n')
     return True

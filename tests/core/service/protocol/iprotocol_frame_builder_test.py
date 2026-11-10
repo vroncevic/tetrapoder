@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
@@ -52,7 +53,7 @@ class TestIProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
-        self.assertTrue(isinstance(ProtocolFrameBuilder(), IProtocolFrameBuilder))
+        self.assertTrue(isinstance(ProtocolFrameBuilder(CRC8()), IProtocolFrameBuilder))
 
 
 if __name__ == '__main__':

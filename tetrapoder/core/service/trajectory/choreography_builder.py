@@ -49,7 +49,7 @@ class ChoreographyBuilder:
             :attributes:
                 | _commands - Mutable accumulator list of plan commands.
             :methods:
-                | __init__ - Initializes ChoreographyBuilder with optional commands list.
+                | __init__ - Initializes ChoreographyBuilder with commands accumulator list.
                 | set_speed - Sets global speed multiplier (1..10).
                 | action_wave - Adds hand wave choreographic gesture command.
                 | emergency_stop - Adds emergency stop command.
@@ -58,14 +58,14 @@ class ChoreographyBuilder:
 
     _commands: list[PlanCommand]
 
-    def __init__(self, commands: list[PlanCommand] | None = None) -> None:
+    def __init__(self, commands: list[PlanCommand]) -> None:
         '''
-            Initializes ChoreographyBuilder with optional commands list.
+            Initializes ChoreographyBuilder with commands accumulator list.
 
-            :param commands: Optional mutable accumulator list.
+            :param commands: Injected mutable accumulator list.
             :exceptions: None.
         '''
-        self._commands = [] if commands is None else commands
+        self._commands = commands
 
     def set_speed(self, speed: int) -> Self:
         '''

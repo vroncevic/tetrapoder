@@ -25,7 +25,6 @@ from struct import pack
 from typing import ClassVar
 
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
-from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.icrc8 import ICRC8
 
 __author__ = 'Vladimir Roncevic'
@@ -60,14 +59,14 @@ class ProtocolFrameBuilder:
 
     _crc: ICRC8
 
-    def __init__(self, crc: ICRC8 | None = None) -> None:
+    def __init__(self, crc: ICRC8) -> None:
         '''
             Initializes ProtocolFrameBuilder with CRC-8 provider.
 
-            :param crc: Optional ICRC8 checksum implementation.
+            :param crc: Injected ICRC8 checksum implementation.
             :exceptions: None.
         '''
-        self._crc = CRC8() if crc is None else crc
+        self._crc = crc
 
     def build_frame(self, msg_id: int, payload: bytes = b'') -> bytes:
         '''

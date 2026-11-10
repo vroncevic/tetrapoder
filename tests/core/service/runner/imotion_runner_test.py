@@ -23,6 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.imotion_runner import IMotionRunner
 from tetrapoder.core.service.runner.motion_runner import MotionRunner
 
@@ -52,7 +54,7 @@ class TestIMotionRunner(TestCase):
 
             :exceptions: None.
         '''
-        self.assertTrue(isinstance(MotionRunner(), IMotionRunner))
+        self.assertTrue(isinstance(MotionRunner(ProtocolFrameBuilder(CRC8())), IMotionRunner))
 
 
 if __name__ == '__main__':

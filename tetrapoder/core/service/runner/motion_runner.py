@@ -26,7 +26,6 @@ from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.response_id import ResponseId
 from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.itransport import ITransport
 
 __author__ = 'Vladimir Roncevic'
@@ -56,14 +55,14 @@ class MotionRunner:
 
     _frame_builder: IProtocolFrameBuilder
 
-    def __init__(self, frame_builder: IProtocolFrameBuilder | None = None) -> None:
+    def __init__(self, frame_builder: IProtocolFrameBuilder) -> None:
         '''
             Initializes MotionRunner with frame builder dependency.
 
-            :param frame_builder: Optional IProtocolFrameBuilder provider.
+            :param frame_builder: Injected IProtocolFrameBuilder provider.
             :exceptions: None.
         '''
-        self._frame_builder = ProtocolFrameBuilder() if frame_builder is None else frame_builder
+        self._frame_builder = frame_builder
 
     def execute(self, plan: MotionPlan, transport: ITransport) -> bool:
         '''

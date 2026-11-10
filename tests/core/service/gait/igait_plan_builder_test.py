@@ -52,7 +52,7 @@ class TestIGaitPlanBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: GaitPlanBuilder = GaitPlanBuilder()
+        builder: GaitPlanBuilder = GaitPlanBuilder([])
         self.assertTrue(isinstance(builder, IGaitPlanBuilder))
 
 

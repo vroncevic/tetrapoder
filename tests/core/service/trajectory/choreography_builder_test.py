@@ -54,7 +54,7 @@ class TestChoreographyBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ChoreographyBuilder = ChoreographyBuilder()
+        builder: ChoreographyBuilder = ChoreographyBuilder([])
         builder.set_speed(5).action_wave(2).emergency_stop()
         plan: MotionPlan = builder.build()
         self.assertEqual(len(plan.commands), 3)
@@ -68,7 +68,7 @@ class TestChoreographyBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ChoreographyBuilder = ChoreographyBuilder()
+        builder: ChoreographyBuilder = ChoreographyBuilder([])
         plan: MotionPlan = builder.build()
         self.assertEqual(len(plan.commands), 0)
 

@@ -54,7 +54,7 @@ class TestGaitPlanBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: GaitPlanBuilder = GaitPlanBuilder()
+        builder: GaitPlanBuilder = GaitPlanBuilder([])
         builder.stand().sit()
         plan: MotionPlan = builder.build()
         self.assertEqual(len(plan.commands), 2)
@@ -67,7 +67,7 @@ class TestGaitPlanBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: GaitPlanBuilder = GaitPlanBuilder()
+        builder: GaitPlanBuilder = GaitPlanBuilder([])
         builder.walk(steps=3, backward=False)
         builder.walk(steps=2, backward=True)
         builder.turn(steps=1, to_right=False)

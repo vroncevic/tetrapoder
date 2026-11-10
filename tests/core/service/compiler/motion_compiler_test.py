@@ -27,6 +27,7 @@ from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
+from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
@@ -57,7 +58,7 @@ class TestMotionCompiler(TestCase):
 
             :exceptions: None.
         '''
-        compiler: MotionCompiler = MotionCompiler()
+        compiler: MotionCompiler = MotionCompiler(ProtocolFrameBuilder(CRC8()))
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))
         data: bytes = compiler.compile(plan)
@@ -70,7 +71,7 @@ class TestMotionCompiler(TestCase):
 
             :exceptions: None.
         '''
-        compiler: MotionCompiler = MotionCompiler()
+        compiler: MotionCompiler = MotionCompiler(ProtocolFrameBuilder(CRC8()))
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         frame: bytes = compiler.compile_command(cmd)
         self.assertEqual(len(frame), 4)
@@ -82,7 +83,7 @@ class TestMotionCompiler(TestCase):
 
             :exceptions: None.
         '''
-        compiler: MotionCompiler = MotionCompiler()
+        compiler: MotionCompiler = MotionCompiler(ProtocolFrameBuilder(CRC8()))
         plan: MotionPlan = MotionPlan(commands=())
         data: bytes = compiler.compile(plan)
         self.assertEqual(len(data), 0)

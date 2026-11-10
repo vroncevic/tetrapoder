@@ -25,6 +25,7 @@ from unittest import TestCase, main
 
 from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
+from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
@@ -57,7 +58,7 @@ class TestProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
         frame: bytes = builder.build_frame(int(CommandId.PING), b'')
         self.assertEqual(len(frame), 4)
         self.assertEqual(frame[0], builder.SYNC_BYTE)
@@ -73,7 +74,7 @@ class TestProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
         with self.assertRaises(ProtocolError):
             builder.build_frame(0x01, b'x' * 17)
 
@@ -83,7 +84,7 @@ class TestProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
         frame: bytearray = bytearray(builder.build_frame(0x01, b'\x05'))
         corrupt_frame: bytes = bytes(frame[:-1] + bytes([frame[-1] ^ 0xFF]))
         with self.assertRaises(ProtocolError):
@@ -95,7 +96,7 @@ class TestProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
         with self.assertRaises(ProtocolError):
             builder.unpack_frame(b'\xAA\x01')
 
@@ -105,7 +106,7 @@ class TestProtocolFrameBuilder(TestCase):
 
             :exceptions: None.
         '''
-        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
         with self.assertRaises(ProtocolError):
             builder.unpack_frame(b'\xAA\x01\x05\x01\x02')
 

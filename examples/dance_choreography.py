@@ -28,6 +28,9 @@ from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
+from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
+from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.trajectory.choreography_builder import ChoreographyBuilder
 from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
 from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
@@ -52,7 +55,8 @@ def main() -> bool:
     commands: list[PlanCommand] = []
     choreography: ChoreographyBuilder = ChoreographyBuilder(commands=commands)
     gait: GaitPlanBuilder = GaitPlanBuilder(commands=commands)
-    trajectory: TrajectoryBuilder = TrajectoryBuilder(commands=commands)
+    solver: KinematicsSolver = KinematicsSolver()
+    trajectory: TrajectoryBuilder = TrajectoryBuilder(solver=solver, commands=commands)
 
     # 1. High-level sequence
     choreography.set_speed(speed=5)
@@ -74,7 +78,9 @@ def main() -> bool:
 
     # 3. Create immutable MotionPlan and compile to binary wire protocol
     plan: MotionPlan = MotionPlan(commands=tuple(commands))
-    binary_data: bytes = MotionCompiler().compile(plan=plan)
+    frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+    compiler: MotionCompiler = MotionCompiler(frame_builder=frame_builder)
+    binary_data: bytes = compiler.compile(plan=plan)
     stdout.write(f'Generated {len(plan.commands)} motion commands.\n')
     stdout.write(f'Compiled binary size: {len(binary_data)} bytes.\n')
     stdout.write(f'Raw binary packet stream (hex):\n{binary_data.hex()}\n')

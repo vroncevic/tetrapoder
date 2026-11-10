@@ -30,7 +30,6 @@ from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.kinematics.ikinematics_solver import IKinematicsSolver
-from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -53,7 +52,7 @@ class TrajectoryBuilder:
                 | _commands - Mutable accumulator list of plan commands.
                 | _solver - Injected kinematics calculation solver.
             :methods:
-                | __init__ - Initializes TrajectoryBuilder with optional commands and solver.
+                | __init__ - Initializes TrajectoryBuilder with kinematics solver and optional commands.
                 | add_keyframe - Solves IK and enqueues joint keyframe from Cartesian coordinates.
                 | add_joint_keyframe - Directly enqueues joint angles in degrees.
                 | build - Constructs immutable MotionPlan from accumulated commands.
@@ -64,18 +63,18 @@ class TrajectoryBuilder:
 
     def __init__(
         self,
-        commands: list[PlanCommand] | None = None,
-        solver: IKinematicsSolver | None = None,
+        solver: IKinematicsSolver,
+        commands: list[PlanCommand],
     ) -> None:
         '''
-            Initializes TrajectoryBuilder with optional commands list and solver.
+            Initializes TrajectoryBuilder with kinematics solver and commands accumulator.
 
-            :param commands: Optional mutable accumulator list.
-            :param solver: Optional IKinematicsSolver provider.
+            :param solver: Injected IKinematicsSolver provider.
+            :param commands: Injected mutable accumulator list.
             :exceptions: None.
         '''
-        self._commands = [] if commands is None else commands
-        self._solver = KinematicsSolver() if solver is None else solver
+        self._solver = solver
+        self._commands = commands
 
     def add_keyframe(self, leg: int, target: FootPosition, duration_ms: int = 200) -> Self:
         '''

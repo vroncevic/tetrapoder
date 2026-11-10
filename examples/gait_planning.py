@@ -26,6 +26,8 @@ from sys import exit as sys_exit, stdout
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
+from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -44,7 +46,7 @@ def main() -> bool:
         :return: True if compiled successfully.
         :exceptions: None.
     '''
-    builder: GaitPlanBuilder = GaitPlanBuilder()
+    builder: GaitPlanBuilder = GaitPlanBuilder([])
 
     # Build sequence of postures and locomotion gaits
     builder.stand()
@@ -55,7 +57,9 @@ def main() -> bool:
     builder.sit()
 
     plan: MotionPlan = builder.build()
-    data: bytes = MotionCompiler().compile(plan=plan)
+    frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())
+    compiler: MotionCompiler = MotionCompiler(frame_builder=frame_builder)
+    data: bytes = compiler.compile(plan=plan)
 
     stdout.write(f'Gait planning generated {len(plan.commands)} commands.\n')
     for idx, cmd in enumerate(plan.commands, 1):
