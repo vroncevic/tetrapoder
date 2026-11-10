@@ -127,6 +127,7 @@ class TestMotionRunner(TestCase):
                 | test_ping_failure - Verifies failed ping handling.
                 | test_execute_ack - Verifies successful plan execution with ACK.
                 | test_execute_nack - Verifies failed plan execution with NACK.
+                | test_execute_protocol_error - Verifies failed plan execution on malformed frame.
     '''
 
     def test_ping_success(self) -> None:
@@ -172,6 +173,18 @@ class TestMotionRunner(TestCase):
         runner: MotionRunner = MotionRunner()
         nack_frame: bytes = ProtocolFrameBuilder().build_frame(int(ResponseId.NACK), b'\x01')
         transport: MockTransport = MockTransport(canned_response=nack_frame)
+        cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
+        plan: MotionPlan = MotionPlan(commands=(cmd,))
+        self.assertFalse(runner.execute(plan, transport))
+
+    def test_execute_protocol_error(self) -> None:
+        '''
+            Verifies failed plan execution on malformed frame.
+
+            :exceptions: None.
+        '''
+        runner: MotionRunner = MotionRunner()
+        transport: MockTransport = MockTransport(canned_response=b'\xFF\xFF\xFF\xFF')
         cmd: PlanCommand = PlanCommand(cmd_id=int(CommandId.PING), payload=b'', description='Ping')
         plan: MotionPlan = MotionPlan(commands=(cmd,))
         self.assertFalse(runner.execute(plan, transport))

@@ -22,6 +22,9 @@ Info
 from __future__ import annotations
 
 from unittest import TestCase, main
+from unittest.mock import MagicMock, patch
+
+from serial import SerialException
 
 from tetrapoder.core.model.exceptions.runner_error import RunnerError
 from tetrapoder.infrastructure.transport.serial import SerialTransport
@@ -46,6 +49,9 @@ class TestSerialTransport(TestCase):
                 | test_initialization - Verifies adapter initialization values and is_open status.
                 | test_closed_write_error - Verifies exception raised when writing to closed port.
                 | test_closed_read_error - Verifies exception raised when reading from closed port.
+                | test_open_and_close - Verifies opening, already opened check, and closing.
+                | test_open_exception - Verifies RunnerError raised when opening fails.
+                | test_write_and_read_io - Verifies write and read operations and error handling.
     '''
 
     def test_initialization(self) -> None:
@@ -76,6 +82,61 @@ class TestSerialTransport(TestCase):
         transport: SerialTransport = SerialTransport()
         with self.assertRaises(RunnerError):
             transport.read(5)
+
+    def test_open_and_close(self) -> None:
+        '''
+            Verifies opening, already opened check, and closing.
+
+            :exceptions: None.
+        '''
+        transport: SerialTransport = SerialTransport(port='/dev/ttyUSB0')
+        mock_ser: MagicMock = MagicMock()
+        mock_ser.is_open = True
+        with patch('tetrapoder.infrastructure.transport.serial.Serial', return_value=mock_ser):
+            transport.open()
+            self.assertTrue(transport.is_open())
+            transport.open()
+            self.assertTrue(transport.is_open())
+            transport.close()
+            self.assertFalse(transport.is_open())
+
+    def test_open_exception(self) -> None:
+        '''
+            Verifies RunnerError raised when opening fails.
+
+            :exceptions: None.
+        '''
+        transport: SerialTransport = SerialTransport(port='/dev/ttyUSB0')
+        with patch(
+            'tetrapoder.infrastructure.transport.serial.Serial',
+            side_effect=SerialException('Device busy')
+        ):
+            with self.assertRaises(RunnerError):
+                transport.open()
+
+    def test_write_and_read_io(self) -> None:
+        '''
+            Verifies write and read operations and error handling.
+
+            :exceptions: None.
+        '''
+        transport: SerialTransport = SerialTransport(port='/dev/ttyUSB0')
+        mock_ser: MagicMock = MagicMock()
+        mock_ser.is_open = True
+        mock_ser.write.return_value = 4
+        mock_ser.read.return_value = b'test'
+        with patch('tetrapoder.infrastructure.transport.serial.Serial', return_value=mock_ser):
+            transport.open()
+            self.assertEqual(transport.write(b'data'), 4)
+            self.assertEqual(transport.read(4), b'test')
+
+            mock_ser.write.side_effect = SerialException('Write error')
+            with self.assertRaises(RunnerError):
+                transport.write(b'data')
+
+            mock_ser.read.side_effect = SerialException('Read error')
+            with self.assertRaises(RunnerError):
+                transport.read(4)
 
 
 if __name__ == '__main__':

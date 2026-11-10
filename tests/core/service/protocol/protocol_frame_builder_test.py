@@ -48,6 +48,7 @@ class TestProtocolFrameBuilder(TestCase):
                 | test_payload_exceeded - Verifies exception when payload exceeds limit.
                 | test_corrupt_crc - Verifies unpacking raises ProtocolError on CRC corruption.
                 | test_short_frame - Verifies unpacking raises ProtocolError on short frame.
+                | test_incomplete_frame - Verifies unpacking raises ProtocolError on incomplete frame.
     '''
 
     def test_build_and_unpack(self) -> None:
@@ -97,6 +98,16 @@ class TestProtocolFrameBuilder(TestCase):
         builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
         with self.assertRaises(ProtocolError):
             builder.unpack_frame(b'\xAA\x01')
+
+    def test_incomplete_frame(self) -> None:
+        '''
+            Verifies unpacking raises ProtocolError on incomplete frame.
+
+            :exceptions: None.
+        '''
+        builder: ProtocolFrameBuilder = ProtocolFrameBuilder()
+        with self.assertRaises(ProtocolError):
+            builder.unpack_frame(b'\xAA\x01\x05\x01\x02')
 
 
 if __name__ == '__main__':
