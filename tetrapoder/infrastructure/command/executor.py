@@ -29,7 +29,7 @@ from tetrapoder.core.model.exceptions.runner_error import RunnerError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.gait.builder import GaitPlanBuilder
-from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.crc8.crc import CRC8
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.runner import MotionRunner
 from tetrapoder.infrastructure.command.idefinition import ICommandDefinition

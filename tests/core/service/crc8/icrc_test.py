@@ -2,7 +2,7 @@
 
 '''
 Module
-    icrc8.py
+    icrc_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,12 +16,15 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Structural interface for CRC-8 checksum calculation and verification.
+    Unit tests for ICRC8 structural protocol.
 '''
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
+from unittest import TestCase, main
+
+from tetrapoder.core.service.crc8.crc import CRC8
+from tetrapoder.core.service.crc8.icrc import ICRC8
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -33,31 +36,24 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@runtime_checkable
-class ICRC8(Protocol):
+class TestICRC8(TestCase):
     '''
-        Structural protocol defining CRC-8 operations.
+        Test cases verifying ICRC8 protocol conformance.
 
         It defines:
 
             :methods:
-                | calculate - Computes CRC-8 checksum for given data bytes.
-                | verify - Verifies that data matches an expected CRC-8 checksum.
+                | test_structural_conformance - Verifies CRC8 satisfies ICRC8.
     '''
 
-    def calculate(self, data: bytes) -> int:
+    def test_structural_conformance(self) -> None:
         '''
-            Computes CRC-8 checksum for given data bytes.
+            Verifies CRC8 satisfies ICRC8.
 
-            :param data: Input byte sequence.
-            :return: Computed CRC-8 checksum integer (0..255).
+            :exceptions: None.
         '''
+        self.assertTrue(isinstance(CRC8(), ICRC8))
 
-    def verify(self, data: bytes, expected_crc: int) -> bool:
-        '''
-            Verifies that data matches an expected CRC-8 checksum.
 
-            :param data: Input byte sequence.
-            :param expected_crc: Expected CRC-8 checksum integer (0..255).
-            :return: True if checksum matches, False otherwise.
-        '''
+if __name__ == '__main__':
+    main()

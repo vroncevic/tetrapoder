@@ -27,7 +27,7 @@ from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.model.response_id import ResponseId
-from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.crc8.crc import CRC8
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.runner import MotionRunner
 

@@ -2,7 +2,7 @@
 
 '''
 Module
-    icrc8_test.py
+    __init__.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,15 +16,10 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for ICRC8 structural protocol.
+    Unit test package for CRC-8 calculation service.
 '''
 
 from __future__ import annotations
-
-from unittest import TestCase, main
-
-from tetrapoder.core.service.protocol.crc8 import CRC8
-from tetrapoder.core.service.protocol.icrc8 import ICRC8
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -34,26 +29,3 @@ __version__ = '1.0.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
-
-
-class TestICRC8(TestCase):
-    '''
-        Test cases verifying ICRC8 protocol conformance.
-
-        It defines:
-
-            :methods:
-                | test_structural_conformance - Verifies CRC8 satisfies ICRC8.
-    '''
-
-    def test_structural_conformance(self) -> None:
-        '''
-            Verifies CRC8 satisfies ICRC8.
-
-            :exceptions: None.
-        '''
-        self.assertTrue(isinstance(CRC8(), ICRC8))
-
-
-if __name__ == '__main__':
-    main()

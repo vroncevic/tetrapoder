@@ -2,7 +2,7 @@
 
 '''
 Module
-    crc8_test.py
+    crc_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.crc8.crc import CRC8
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

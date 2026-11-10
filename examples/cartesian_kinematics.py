@@ -28,7 +28,7 @@ from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.kinematics.solver import KinematicsSolver
-from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.crc8.crc import CRC8
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 from tetrapoder.core.service.trajectory.trajectory import TrajectoryBuilder
 

@@ -25,7 +25,7 @@ from unittest import TestCase, main
 
 from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
-from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.crc8.crc import CRC8
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'

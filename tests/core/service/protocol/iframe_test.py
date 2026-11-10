@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.crc8.crc import CRC8
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 from tetrapoder.core.service.protocol.iframe import IProtocolFrameBuilder
 
