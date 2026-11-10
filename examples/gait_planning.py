@@ -25,7 +25,7 @@ from sys import exit as sys_exit, stdout
 
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.service.compiler.motion import MotionCompiler
-from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
+from tetrapoder.core.service.gait.builder import GaitPlanBuilder
 from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 

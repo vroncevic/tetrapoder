@@ -2,7 +2,7 @@
 
 '''
 Module
-    igait_plan_builder_test.py
+    ibuilder_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
-from tetrapoder.core.service.gait.igait_plan_builder import IGaitPlanBuilder
+from tetrapoder.core.service.gait.builder import GaitPlanBuilder
+from tetrapoder.core.service.gait.ibuilder import IGaitPlanBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

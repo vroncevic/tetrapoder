@@ -28,7 +28,7 @@ from ats_utilities.utils.reflection import to_str
 from tetrapoder.core.model.exceptions.runner_error import RunnerError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.service.compiler.motion import MotionCompiler
-from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
+from tetrapoder.core.service.gait.builder import GaitPlanBuilder
 from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.runner.motion_runner import MotionRunner
