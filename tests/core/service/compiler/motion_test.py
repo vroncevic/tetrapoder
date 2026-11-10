@@ -2,7 +2,7 @@
 
 '''
 Module
-    motion_compiler_test.py
+    motion_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -26,7 +26,7 @@ from unittest import TestCase, main
 from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
-from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
+from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 

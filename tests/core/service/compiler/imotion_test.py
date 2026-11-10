@@ -2,7 +2,7 @@
 
 '''
 Module
-    imotion_compiler_test.py
+    imotion_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.compiler.imotion_compiler import IMotionCompiler
-from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
+from tetrapoder.core.service.compiler.imotion import IMotionCompiler
+from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
