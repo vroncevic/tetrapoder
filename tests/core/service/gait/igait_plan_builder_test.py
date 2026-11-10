@@ -2,7 +2,7 @@
 
 '''
 Module
-    gait_plan_builder_test.py
+    igait_plan_builder_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,16 +16,15 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for GaitPlanBuilder class.
+    Unit tests for IGaitPlanBuilder structural protocol.
 '''
 
 from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.model.command_id import CommandId
-from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.gait_plan_builder import GaitPlanBuilder
+from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
+from tetrapoder.core.service.gait.igait_plan_builder import IGaitPlanBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -37,43 +36,24 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestGaitPlanBuilder(TestCase):
+class TestIGaitPlanBuilder(TestCase):
     '''
-        Test cases verifying GaitPlanBuilder sequence generation.
+        Test cases verifying IGaitPlanBuilder protocol conformance.
 
         It defines:
 
             :methods:
-                | test_stand_and_sit - Verifies generating stand and sit posture commands.
-                | test_walk_and_turn - Verifies generating walk and turn sequences.
+                | test_structural_conformance - Verifies GaitPlanBuilder satisfies IGaitPlanBuilder.
     '''
 
-    def test_stand_and_sit(self) -> None:
+    def test_structural_conformance(self) -> None:
         '''
-            Verifies generating stand and sit posture commands.
+            Verifies GaitPlanBuilder satisfies IGaitPlanBuilder.
 
             :exceptions: None.
         '''
         builder: GaitPlanBuilder = GaitPlanBuilder()
-        builder.stand().sit()
-        plan: MotionPlan = builder.build()
-        self.assertEqual(len(plan.commands), 2)
-        self.assertEqual(plan.commands[0].cmd_id, int(CommandId.GAIT_STEP))
-        self.assertEqual(plan.commands[1].cmd_id, int(CommandId.GAIT_STEP))
-
-    def test_walk_and_turn(self) -> None:
-        '''
-            Verifies generating walk and turn sequences.
-
-            :exceptions: None.
-        '''
-        builder: GaitPlanBuilder = GaitPlanBuilder()
-        builder.walk(steps=3, backward=False)
-        builder.walk(steps=2, backward=True)
-        builder.turn(steps=1, to_right=False)
-        builder.turn(steps=1, to_right=True)
-        plan: MotionPlan = builder.build()
-        self.assertEqual(len(plan.commands), 4)
+        self.assertTrue(isinstance(builder, IGaitPlanBuilder))
 
 
 if __name__ == '__main__':

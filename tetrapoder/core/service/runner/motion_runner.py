@@ -24,8 +24,8 @@ from __future__ import annotations
 from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.response_id import ResponseId
-from tetrapoder.core.service.itransport import ITransport
-from tetrapoder.core.service.protocol_frame_builder import ProtocolFrameBuilder
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
+from tetrapoder.core.service.runner.itransport import ITransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

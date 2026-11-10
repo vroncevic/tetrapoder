@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.crc8 import CRC8
+from tetrapoder.core.service.protocol.crc8 import CRC8
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -37,47 +37,55 @@ __status__ = 'Updated'
 
 class TestCRC8(TestCase):
     '''
-        Test cases verifying CRC8 calculation and verification logic.
+        Test cases verifying CRC8 calculation and verification.
 
         It defines:
 
             :methods:
-                | test_empty_bytes - Verifies CRC of empty byte string is zero.
-                | test_known_pattern - Verifies CRC calculation against known test patterns.
-                | test_verification - Verifies CRC verification method.
+                | test_empty_bytes - Verifies CRC8 on empty bytes is 0.
+                | test_known_pattern - Verifies CRC8 on known byte sequence.
+                | test_verify_success - Verifies verify method returns True for valid CRC.
+                | test_verify_failure - Verifies verify method returns False for invalid CRC.
     '''
 
     def test_empty_bytes(self) -> None:
         '''
-            Verifies CRC of empty byte string is zero.
+            Verifies CRC8 on empty bytes is 0.
 
             :exceptions: None.
         '''
         self.assertEqual(CRC8.calculate(b''), 0)
-        self.assertTrue(CRC8.verify(b'', 0))
 
     def test_known_pattern(self) -> None:
         '''
-            Verifies CRC calculation against known test patterns.
+            Verifies CRC8 on known byte sequence.
 
             :exceptions: None.
         '''
-        data = b'\x01\x00'
-        crc = CRC8.calculate(data)
+        data: bytes = b'\x01\x02\x03\x04'
+        crc: int = CRC8.calculate(data)
         self.assertIsInstance(crc, int)
         self.assertGreaterEqual(crc, 0)
         self.assertLessEqual(crc, 255)
 
-    def test_verification(self) -> None:
+    def test_verify_success(self) -> None:
         '''
-            Verifies CRC verification method.
+            Verifies verify method returns True for valid CRC.
 
             :exceptions: None.
         '''
-        data = b'\x02\x04\x01\x02\x03\x04'
-        crc = CRC8.calculate(data)
+        data: bytes = b'Hello Robot'
+        crc: int = CRC8.calculate(data)
         self.assertTrue(CRC8.verify(data, crc))
-        self.assertFalse(CRC8.verify(data, (crc + 1) % 256))
+
+    def test_verify_failure(self) -> None:
+        '''
+            Verifies verify method returns False for invalid CRC.
+
+            :exceptions: None.
+        '''
+        data: bytes = b'Hello Robot'
+        self.assertFalse(CRC8.verify(data, 0xFF))
 
 
 if __name__ == '__main__':

@@ -26,7 +26,7 @@ from unittest import TestCase, main
 from tetrapoder.core.model.exceptions.kinematics_error import KinematicsError
 from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
-from tetrapoder.core.service.kinematics_solver import KinematicsSolver
+from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

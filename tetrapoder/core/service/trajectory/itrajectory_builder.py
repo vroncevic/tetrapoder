@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Structural interface for Cartesian and joint trajectory building.
+    Structural interface for trajectory keyframe sequence builder.
 '''
 
 from __future__ import annotations
@@ -25,6 +25,7 @@ from typing import Protocol, Self, runtime_checkable
 
 from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
+from tetrapoder.core.model.motion_plan import MotionPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -39,16 +40,14 @@ __status__ = 'Updated'
 @runtime_checkable
 class ITrajectoryBuilder(Protocol):
     '''
-        Structural protocol defining trajectory and keyframe builder methods.
+        Structural protocol defining trajectory keyframe sequence builder.
 
         It defines:
 
             :methods:
-                | add_keyframe - Solves IK and enqueues Cartesian keyframe.
-                | add_joint_keyframe - Directly enqueues joint angles keyframe.
-                | set_speed - Sets global robot speed multiplier.
-                | action_wave - Appends hand wave action sequence.
-                | emergency_stop - Appends emergency stop command.
+                | add_keyframe - Solves IK and enqueues joint keyframe from Cartesian coordinates.
+                | add_joint_keyframe - Directly enqueues joint angles in degrees.
+                | build - Constructs immutable MotionPlan from accumulated commands.
     '''
 
     def add_keyframe(self, leg: int, target: FootPosition, duration_ms: int = 200) -> Self:
@@ -58,7 +57,7 @@ class ITrajectoryBuilder(Protocol):
             :param leg: Leg index (0..3) or 0xFF for all legs.
             :param target: FootPosition Cartesian coordinates in mm.
             :param duration_ms: Interpolation duration in ms.
-            :return: Self for chaining.
+            :return: Self for method chaining.
         '''
 
     def add_joint_keyframe(self, leg: int, angles: LegAngles, duration_ms: int = 200) -> Self:
@@ -68,28 +67,12 @@ class ITrajectoryBuilder(Protocol):
             :param leg: Leg index (0..3) or 0xFF for all legs.
             :param angles: LegAngles shaft angles in degrees (0..180).
             :param duration_ms: Interpolation duration in ms.
-            :return: Self for chaining.
+            :return: Self for method chaining.
         '''
 
-    def set_speed(self, speed: int) -> Self:
+    def build(self) -> MotionPlan:
         '''
-            Sets global speed multiplier (1..10).
+            Constructs immutable MotionPlan from accumulated commands.
 
-            :param speed: Speed multiplier integer (1..10).
-            :return: Self for chaining.
-        '''
-
-    def action_wave(self, count: int = 2) -> Self:
-        '''
-            Adds hand wave choreographic action.
-
-            :param count: Repetition count for wave action.
-            :return: Self for chaining.
-        '''
-
-    def emergency_stop(self) -> Self:
-        '''
-            Adds emergency stop command.
-
-            :return: Self for chaining.
+            :return: Immutable MotionPlan instance.
         '''

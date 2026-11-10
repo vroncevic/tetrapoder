@@ -2,7 +2,7 @@
 
 '''
 Module
-    trajectory_builder_test.py
+    choreography_builder_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for TrajectoryBuilder class.
+    Unit tests for ChoreographyBuilder class.
 '''
 
 from __future__ import annotations
@@ -24,11 +24,8 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from tetrapoder.core.model.command_id import CommandId
-from tetrapoder.core.model.foot_position import FootPosition
-from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.model.plan_command import PlanCommand
-from tetrapoder.core.service.trajectory_builder import TrajectoryBuilder
+from tetrapoder.core.service.trajectory.choreography_builder import ChoreographyBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -40,45 +37,16 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestTrajectoryBuilder(TestCase):
+class TestChoreographyBuilder(TestCase):
     '''
-        Test cases verifying TrajectoryBuilder trajectory planning.
+        Test cases verifying ChoreographyBuilder actions and speed settings.
 
         It defines:
 
             :methods:
-                | test_add_keyframe - Verifies adding Cartesian keyframe.
-                | test_add_joint_keyframe - Verifies adding joint angle keyframe directly.
                 | test_actions_and_speed - Verifies speed, wave action, and emergency stop.
+                | test_build_empty - Verifies building empty plan by default.
     '''
-
-    def test_add_keyframe(self) -> None:
-        '''
-            Verifies adding Cartesian keyframe.
-
-            :exceptions: None.
-        '''
-        commands: list[PlanCommand] = []
-        builder: TrajectoryBuilder = TrajectoryBuilder(commands)
-        target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
-        builder.add_keyframe(0, target, duration_ms=250)
-        plan: MotionPlan = MotionPlan(commands=tuple(commands))
-        self.assertEqual(len(plan.commands), 1)
-        self.assertEqual(plan.commands[0].cmd_id, int(CommandId.QUEUE_KEYFRAME))
-
-    def test_add_joint_keyframe(self) -> None:
-        '''
-            Verifies adding joint angle keyframe directly.
-
-            :exceptions: None.
-        '''
-        commands: list[PlanCommand] = []
-        builder: TrajectoryBuilder = TrajectoryBuilder(commands)
-        angles: LegAngles = LegAngles(coxa=90.0, femur=90.0, tibia=90.0)
-        builder.add_joint_keyframe(0xFF, angles, duration_ms=100)
-        plan: MotionPlan = MotionPlan(commands=tuple(commands))
-        self.assertEqual(len(plan.commands), 1)
-        self.assertEqual(plan.commands[0].cmd_id, int(CommandId.QUEUE_KEYFRAME))
 
     def test_actions_and_speed(self) -> None:
         '''
@@ -86,14 +54,23 @@ class TestTrajectoryBuilder(TestCase):
 
             :exceptions: None.
         '''
-        commands: list[PlanCommand] = []
-        builder: TrajectoryBuilder = TrajectoryBuilder(commands)
+        builder: ChoreographyBuilder = ChoreographyBuilder()
         builder.set_speed(5).action_wave(2).emergency_stop()
-        plan: MotionPlan = MotionPlan(commands=tuple(commands))
+        plan: MotionPlan = builder.build()
         self.assertEqual(len(plan.commands), 3)
         self.assertEqual(plan.commands[0].cmd_id, int(CommandId.SET_SPEED))
         self.assertEqual(plan.commands[1].cmd_id, int(CommandId.GAIT_STEP))
         self.assertEqual(plan.commands[2].cmd_id, int(CommandId.STOP))
+
+    def test_build_empty(self) -> None:
+        '''
+            Verifies building empty plan by default.
+
+            :exceptions: None.
+        '''
+        builder: ChoreographyBuilder = ChoreographyBuilder()
+        plan: MotionPlan = builder.build()
+        self.assertEqual(len(plan.commands), 0)
 
 
 if __name__ == '__main__':

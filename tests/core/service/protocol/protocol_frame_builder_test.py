@@ -25,7 +25,7 @@ from unittest import TestCase, main
 
 from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
-from tetrapoder.core.service.protocol_frame_builder import ProtocolFrameBuilder
+from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

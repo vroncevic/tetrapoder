@@ -25,7 +25,7 @@ from struct import pack
 from typing import ClassVar
 
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
-from tetrapoder.core.service.crc8 import CRC8
+from tetrapoder.core.service.protocol.crc8 import CRC8
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
