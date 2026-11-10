@@ -25,8 +25,8 @@ from math import acos, atan2, degrees, sqrt
 from typing import ClassVar
 
 from tetrapoder.core.model.exceptions.kinematics_error import KinematicsError
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
+from tetrapoder.core.model.point3d import Point3D
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -60,17 +60,18 @@ class KinematicsSolver:
     FEMUR_LENGTH: ClassVar[float] = 55.0
     TIBIA_LENGTH: ClassVar[float] = 55.0
 
-    def cartesian_to_polar(self, x: float, y: float, z: float) -> tuple[float, float, float]:
+    def cartesian_to_polar(self, point: Point3D) -> tuple[float, float, float]:
         '''
             Transforms Cartesian coordinate into polar leg angles (alpha, beta, gamma).
 
-            :param x: Lateral coordinate in mm.
-            :param y: Forward coordinate in mm.
-            :param z: Vertical elevation coordinate in mm.
+            :param point: Point3D Cartesian coordinates in mm.
             :return: Tuple of (alpha, beta, gamma) in radians.
             :exceptions:
                 | KinematicsError: If target coordinates exceed physical leg reach.
         '''
+        x: float = point.x
+        y: float = point.y
+        z: float = point.z
         dist_xy: float = sqrt(x * x + y * y)
         d_val: float = dist_xy - self.COXA_LENGTH
         l_eff: float = sqrt(d_val * d_val + z * z)
@@ -121,12 +122,12 @@ class KinematicsSolver:
             tibia=max(0.0, min(180.0, tibia_deg)),
         )
 
-    def solve(self, leg: int, target: FootPosition) -> LegAngles:
+    def solve(self, leg: int, target: Point3D) -> LegAngles:
         '''
             Solves full inverse kinematics mapping 3D Cartesian target to joint angles.
 
             :param leg: Leg index (0..3).
-            :param target: FootPosition Cartesian coordinates.
+            :param target: Point3D Cartesian coordinates.
             :return: LegAngles containing servo angles in degrees.
             :exceptions:
                 | KinematicsError: If target is out of reach or leg index is invalid.
@@ -134,7 +135,7 @@ class KinematicsSolver:
         if leg not in (0, 1, 2, 3):
             raise KinematicsError(f'Invalid leg index {leg}: must be 0, 1, 2, or 3')
 
-        alpha, beta, gamma = self.cartesian_to_polar(target.x, target.y, target.z)
+        alpha, beta, gamma = self.cartesian_to_polar(target)
         return self.polar_to_servo(leg, alpha, beta, gamma)
 
     def to_tenths(self, angles: LegAngles) -> tuple[int, int, int]:

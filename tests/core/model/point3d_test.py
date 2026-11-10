@@ -2,7 +2,7 @@
 
 '''
 Module
-    foot_position_test.py
+    point3d_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for FootPosition data model.
+    Unit tests for Point3D data model.
 '''
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ from __future__ import annotations
 from dataclasses import FrozenInstanceError
 from unittest import TestCase, main
 
-from tetrapoder.core.model.foot_position import FootPosition
+from tetrapoder.core.model.point3d import Point3D
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -36,15 +36,15 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestFootPosition(TestCase):
+class TestPoint3D(TestCase):
     '''
-        Test cases verifying FootPosition value object behavior.
+        Test cases verifying Point3D value object behavior.
 
         It defines:
 
             :methods:
                 | test_initialization - Verifies attributes initialization.
-                | test_immutability - Verifies that FootPosition attributes cannot be modified.
+                | test_immutability - Verifies that Point3D attributes cannot be modified.
     '''
 
     def test_initialization(self) -> None:
@@ -53,20 +53,20 @@ class TestFootPosition(TestCase):
 
             :exceptions: None.
         '''
-        foot: FootPosition = FootPosition(x=10.0, y=20.0, z=-30.0)
-        self.assertEqual(foot.x, 10.0)
-        self.assertEqual(foot.y, 20.0)
-        self.assertEqual(foot.z, -30.0)
+        point: Point3D = Point3D(x=10.0, y=20.0, z=-30.0)
+        self.assertEqual(point.x, 10.0)
+        self.assertEqual(point.y, 20.0)
+        self.assertEqual(point.z, -30.0)
 
     def test_immutability(self) -> None:
         '''
-            Verifies that FootPosition attributes cannot be modified.
+            Verifies that Point3D attributes cannot be modified.
 
             :exceptions: None.
         '''
-        foot: FootPosition = FootPosition(x=0.0, y=0.0, z=0.0)
+        point: Point3D = Point3D(x=0.0, y=0.0, z=0.0)
         with self.assertRaises(FrozenInstanceError):
-            foot.x = 5.0  # type: ignore[misc]
+            point.x = 5.0  # type: ignore[misc]
 
 
 if __name__ == '__main__':

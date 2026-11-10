@@ -23,9 +23,9 @@ from __future__ import annotations
 
 from sys import exit as sys_exit, stdout
 
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
+from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
 from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
@@ -68,10 +68,10 @@ def main() -> bool:
 
     # 2. Keyframe sequence (direct foot coordinates)
     trajectory.add_keyframe(
-        leg=0, target=FootPosition(x=62.0, y=20.0, z=-30.0), duration_ms=250
+        leg=0, target=Point3D(x=62.0, y=20.0, z=-30.0), duration_ms=250
     )
     trajectory.add_keyframe(
-        leg=0, target=FootPosition(x=62.0, y=20.0, z=-50.0), duration_ms=250
+        leg=0, target=Point3D(x=62.0, y=20.0, z=-50.0), duration_ms=250
     )
 
     gait.sit()

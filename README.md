@@ -76,7 +76,7 @@ pip install -r requirements.txt
 ## 🏗 Architecture & SOLID Principles
 
 `tetrapoder` follows Clean / Hexagonal Architecture:
-- `core/model/`: Pure domain entities (`FootPosition`, `LegAngles`, `PlanCommand`, `MotionPlan`) and domain exceptions. Completely free of framework or I/O dependencies.
+- `core/model/`: Pure domain entities (`Point3D`, `LegAngles`, `PlanCommand`, `MotionPlan`) and domain exceptions. Completely free of framework or I/O dependencies.
 - `core/service/`: Driving and driven port interfaces (`@runtime_checkable Protocol`) and pure algorithmic domain services (`KinematicsSolver`, `GaitPlanBuilder`, `TrajectoryBuilder`, `ProtocolFrameBuilder`, `MotionCompiler`, `MotionRunner`, `CRC8`).
 - `infrastructure/`: Concrete adapters implementing service ports:
   - `transport/serial_transport.py`: Hardware UART/Serial adapter.

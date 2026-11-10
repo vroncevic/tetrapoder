@@ -25,10 +25,10 @@ from struct import pack
 from typing import Self
 
 from tetrapoder.core.model.command_id import CommandId
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
+from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.kinematics.ikinematics_solver import IKinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
@@ -76,12 +76,12 @@ class TrajectoryBuilder:
         self._solver = solver
         self._commands = commands
 
-    def add_keyframe(self, leg: int, target: FootPosition, duration_ms: int = 200) -> Self:
+    def add_keyframe(self, leg: int, target: Point3D, duration_ms: int = 200) -> Self:
         '''
             Computes inverse kinematics on PC and enqueues joint angle keyframe.
 
             :param leg: Leg index (0..3) or 0xFF for all legs.
-            :param target: FootPosition Cartesian coordinates in mm.
+            :param target: Point3D Cartesian coordinates in mm.
             :param duration_ms: Interpolation duration in ms.
             :return: Self for chaining.
             :exceptions: None.

@@ -24,9 +24,9 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from tetrapoder.core.model.command_id import CommandId
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
+from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
 from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
 
@@ -59,7 +59,7 @@ class TestTrajectoryBuilder(TestCase):
             :exceptions: None.
         '''
         builder: TrajectoryBuilder = TrajectoryBuilder(KinematicsSolver(), [])
-        target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
+        target: Point3D = Point3D(x=0.0, y=80.0, z=-50.0)
         builder.add_keyframe(0, target, duration_ms=250)
         plan: MotionPlan = builder.build()
         self.assertEqual(len(plan.commands), 1)

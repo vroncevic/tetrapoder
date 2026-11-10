@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
+from tetrapoder.core.model.point3d import Point3D
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -50,13 +50,11 @@ class IKinematicsSolver(Protocol):
                 | to_tenths - Converts joint angles to integer tenths of a degree.
     '''
 
-    def cartesian_to_polar(self, x: float, y: float, z: float) -> tuple[float, float, float]:
+    def cartesian_to_polar(self, point: Point3D) -> tuple[float, float, float]:
         '''
             Transforms Cartesian coordinate into polar leg angles (alpha, beta, gamma).
 
-            :param x: Lateral coordinate in mm.
-            :param y: Forward coordinate in mm.
-            :param z: Vertical elevation coordinate in mm.
+            :param point: Point3D Cartesian coordinates in mm.
             :return: Tuple of (alpha, beta, gamma) in radians.
         '''
 
@@ -71,12 +69,12 @@ class IKinematicsSolver(Protocol):
             :return: LegAngles with degrees (0..180).
         '''
 
-    def solve(self, leg: int, target: FootPosition) -> LegAngles:
+    def solve(self, leg: int, target: Point3D) -> LegAngles:
         '''
             Solves full inverse kinematics mapping 3D Cartesian target to joint angles.
 
             :param leg: Leg index (0..3).
-            :param target: FootPosition Cartesian coordinates.
+            :param target: Point3D Cartesian coordinates.
             :return: LegAngles containing servo angles in degrees.
         '''
 

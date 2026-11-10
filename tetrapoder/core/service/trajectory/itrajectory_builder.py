@@ -23,9 +23,9 @@ from __future__ import annotations
 
 from typing import Protocol, Self, runtime_checkable
 
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
+from tetrapoder.core.model.point3d import Point3D
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -50,12 +50,12 @@ class ITrajectoryBuilder(Protocol):
                 | build - Constructs immutable MotionPlan from accumulated commands.
     '''
 
-    def add_keyframe(self, leg: int, target: FootPosition, duration_ms: int = 200) -> Self:
+    def add_keyframe(self, leg: int, target: Point3D, duration_ms: int = 200) -> Self:
         '''
             Computes inverse kinematics on PC and enqueues joint angle keyframe.
 
             :param leg: Leg index (0..3) or 0xFF for all legs.
-            :param target: FootPosition Cartesian coordinates in mm.
+            :param target: Point3D Cartesian coordinates in mm.
             :param duration_ms: Interpolation duration in ms.
             :return: Self for method chaining.
         '''

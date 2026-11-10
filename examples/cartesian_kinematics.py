@@ -23,9 +23,9 @@ from __future__ import annotations
 
 from sys import exit as sys_exit, stdout
 
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
+from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
 from tetrapoder.core.service.protocol.crc8 import CRC8
@@ -53,7 +53,7 @@ def main() -> bool:
     builder: TrajectoryBuilder = TrajectoryBuilder(solver=solver, commands=[])
 
     # Step 1: Solve explicit IK for neutral leg position
-    target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
+    target: Point3D = Point3D(x=0.0, y=80.0, z=-50.0)
     stdout.write(f'Target Cartesian foot position: ({target.x:.1f}, {target.y:.1f}, {target.z:.1f}) mm\n')
 
     for leg_id in range(4):
@@ -65,10 +65,10 @@ def main() -> bool:
         )
 
     # Step 2: Build trajectory keyframes with interpolation
-    builder.add_keyframe(leg=0, target=FootPosition(x=30.0, y=70.0, z=-30.0), duration_ms=200)
-    builder.add_keyframe(leg=0, target=FootPosition(x=0.0, y=80.0, z=-50.0), duration_ms=200)
-    builder.add_keyframe(leg=1, target=FootPosition(x=-30.0, y=70.0, z=-30.0), duration_ms=200)
-    builder.add_keyframe(leg=1, target=FootPosition(x=0.0, y=80.0, z=-50.0), duration_ms=200)
+    builder.add_keyframe(leg=0, target=Point3D(x=30.0, y=70.0, z=-30.0), duration_ms=200)
+    builder.add_keyframe(leg=0, target=Point3D(x=0.0, y=80.0, z=-50.0), duration_ms=200)
+    builder.add_keyframe(leg=1, target=Point3D(x=-30.0, y=70.0, z=-30.0), duration_ms=200)
+    builder.add_keyframe(leg=1, target=Point3D(x=0.0, y=80.0, z=-50.0), duration_ms=200)
 
     plan: MotionPlan = builder.build()
     frame_builder: ProtocolFrameBuilder = ProtocolFrameBuilder(CRC8())

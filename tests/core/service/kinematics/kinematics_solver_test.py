@@ -24,8 +24,8 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from tetrapoder.core.model.exceptions.kinematics_error import KinematicsError
-from tetrapoder.core.model.foot_position import FootPosition
 from tetrapoder.core.model.leg_angles import LegAngles
+from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
@@ -58,7 +58,7 @@ class TestKinematicsSolver(TestCase):
             :exceptions: None.
         '''
         solver: KinematicsSolver = KinematicsSolver()
-        target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
+        target: Point3D = Point3D(x=0.0, y=80.0, z=-50.0)
         angles: LegAngles = solver.solve(0, target)
         self.assertGreaterEqual(angles.coxa, 0.0)
         self.assertLessEqual(angles.coxa, 180.0)
@@ -74,7 +74,7 @@ class TestKinematicsSolver(TestCase):
             :exceptions: None.
         '''
         solver: KinematicsSolver = KinematicsSolver()
-        target: FootPosition = FootPosition(x=0.0, y=500.0, z=-500.0)
+        target: Point3D = Point3D(x=0.0, y=500.0, z=-500.0)
         with self.assertRaises(KinematicsError):
             solver.solve(0, target)
 
@@ -85,7 +85,7 @@ class TestKinematicsSolver(TestCase):
             :exceptions: None.
         '''
         solver: KinematicsSolver = KinematicsSolver()
-        target: FootPosition = FootPosition(x=0.0, y=80.0, z=-50.0)
+        target: Point3D = Point3D(x=0.0, y=80.0, z=-50.0)
         with self.assertRaises(KinematicsError):
             solver.solve(4, target)
 

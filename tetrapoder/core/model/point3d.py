@@ -2,7 +2,7 @@
 
 '''
 Module
-    foot_position.py
+    point3d.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Pure immutable Cartesian 3D foot position value object.
+    Pure immutable Cartesian 3D coordinate point value object.
 '''
 
 from __future__ import annotations
@@ -34,16 +34,16 @@ __status__ = 'Updated'
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class FootPosition:
+class Point3D:
     '''
-        Defines immutable 3D Cartesian coordinates of a foot tip.
+        Defines immutable 3D Cartesian coordinates.
 
         It defines:
 
             :attributes:
                 | x - Lateral coordinate in mm.
                 | y - Forward coordinate in mm.
-                | z - Vertical elevation coordinate in mm (negative downward).
+                | z - Vertical elevation coordinate in mm.
     '''
 
     x: float
