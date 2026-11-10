@@ -2,7 +2,7 @@
 
 '''
 Module
-    posture_compensator_test.py
+    compensator_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -26,7 +26,7 @@ from unittest import TestCase, main
 from tetrapoder.core.model.exceptions.kinematics_error import KinematicsError
 from tetrapoder.core.model.imu_telemetry import ImuTelemetry
 from tetrapoder.core.model.point3d import Point3D
-from tetrapoder.core.service.stabilizer.posture_compensator import PostureCompensator
+from tetrapoder.core.service.stabilizer.compensator import PostureCompensator
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

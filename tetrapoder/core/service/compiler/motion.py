@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
-from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
+from tetrapoder.core.service.protocol.iframe import IProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

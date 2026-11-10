@@ -2,7 +2,7 @@
 
 '''
 Module
-    choreography_builder_test.py
+    choreography_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -25,7 +25,7 @@ from unittest import TestCase, main
 
 from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.trajectory.choreography_builder import ChoreographyBuilder
+from tetrapoder.core.service.trajectory.choreography import ChoreographyBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

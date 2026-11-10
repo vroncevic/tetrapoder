@@ -2,7 +2,7 @@
 
 '''
 Module
-    iprotocol_frame_builder.py
+    irunner_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,12 +16,17 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Structural interface for binary protocol frame serialization.
+    Unit tests for IMotionRunner structural protocol.
 '''
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
+from unittest import TestCase, main
+
+from tetrapoder.core.service.protocol.crc8 import CRC8
+from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
+from tetrapoder.core.service.runner.irunner import IMotionRunner
+from tetrapoder.core.service.runner.runner import MotionRunner
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -33,31 +38,24 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@runtime_checkable
-class IProtocolFrameBuilder(Protocol):
+class TestIMotionRunner(TestCase):
     '''
-        Structural protocol defining binary serial frame serialization and deserialization.
+        Test cases verifying IMotionRunner protocol conformance.
 
         It defines:
 
             :methods:
-                | build_frame - Encapsulates payload into wire-level frame with CRC-8.
-                | unpack_frame - Parses and validates an incoming wire frame.
+                | test_structural_conformance - Verifies MotionRunner satisfies IMotionRunner.
     '''
 
-    def build_frame(self, msg_id: int, payload: bytes = b'') -> bytes:
+    def test_structural_conformance(self) -> None:
         '''
-            Packs message ID and payload into binary frame protected by CRC-8.
+            Verifies MotionRunner satisfies IMotionRunner.
 
-            :param msg_id: Numeric message or command ID.
-            :param payload: Binary payload bytes.
-            :return: Formatted wire-level frame bytes.
+            :exceptions: None.
         '''
+        self.assertTrue(isinstance(MotionRunner(ProtocolFrameBuilder(CRC8())), IMotionRunner))
 
-    def unpack_frame(self, data: bytes) -> tuple[int, bytes]:
-        '''
-            Unpacks and verifies CRC-8 on an incoming frame.
 
-            :param data: Wire bytes starting with SYNC byte.
-            :return: Tuple of (msg_id, payload).
-        '''
+if __name__ == '__main__':
+    main()

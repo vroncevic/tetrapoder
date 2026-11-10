@@ -30,8 +30,8 @@ from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.gait.builder import GaitPlanBuilder
 from tetrapoder.core.service.protocol.crc8 import CRC8
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
-from tetrapoder.core.service.runner.motion_runner import MotionRunner
+from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
+from tetrapoder.core.service.runner.runner import MotionRunner
 from tetrapoder.infrastructure.command.idefinition import ICommandDefinition
 from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
 from tetrapoder.infrastructure.transport.serial import SerialTransport

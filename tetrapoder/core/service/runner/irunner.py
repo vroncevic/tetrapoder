@@ -2,7 +2,7 @@
 
 '''
 Module
-    itrajectory_builder_test.py
+    irunner.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,16 +16,15 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for ITrajectoryBuilder structural protocol.
+    Structural interface for motion plan execution runner.
 '''
 
 from __future__ import annotations
 
-from unittest import TestCase, main
+from typing import Protocol, runtime_checkable
 
-from tetrapoder.core.service.kinematics.solver import KinematicsSolver
-from tetrapoder.core.service.trajectory.itrajectory_builder import ITrajectoryBuilder
-from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
+from tetrapoder.core.model.motion_plan import MotionPlan
+from tetrapoder.core.service.runner.itransport import ITransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -37,25 +36,31 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestITrajectoryBuilder(TestCase):
+@runtime_checkable
+class IMotionRunner(Protocol):
     '''
-        Test cases verifying ITrajectoryBuilder protocol conformance.
+        Structural protocol defining motion plan execution runner.
 
         It defines:
 
             :methods:
-                | test_structural_conformance - Verifies TrajectoryBuilder satisfies ITrajectoryBuilder.
+                | execute - Streams motion plan frames with ACK/NACK validation.
+                | ping - Verifies robot heartbeat connectivity.
     '''
 
-    def test_structural_conformance(self) -> None:
+    def execute(self, plan: MotionPlan, transport: ITransport) -> bool:
         '''
-            Verifies TrajectoryBuilder satisfies ITrajectoryBuilder.
+            Executes compiled motion plan commands over hardware transport.
 
-            :exceptions: None.
+            :param plan: MotionPlan container to execute.
+            :param transport: Hardware transport instance.
+            :return: True if all commands acknowledged, False otherwise.
         '''
-        builder: TrajectoryBuilder = TrajectoryBuilder(KinematicsSolver(), [])
-        self.assertTrue(isinstance(builder, ITrajectoryBuilder))
 
+    def ping(self, transport: ITransport) -> bool:
+        '''
+            Sends heartbeat ping and checks for pong response.
 
-if __name__ == '__main__':
-    main()
+            :param transport: Hardware transport instance.
+            :return: True if pong response received, False otherwise.
+        '''

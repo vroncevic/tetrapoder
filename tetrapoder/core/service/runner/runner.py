@@ -2,7 +2,7 @@
 
 '''
 Module
-    motion_runner.py
+    runner.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -25,7 +25,7 @@ from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.response_id import ResponseId
-from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
+from tetrapoder.core.service.protocol.iframe import IProtocolFrameBuilder
 from tetrapoder.core.service.runner.itransport import ITransport
 
 __author__ = 'Vladimir Roncevic'

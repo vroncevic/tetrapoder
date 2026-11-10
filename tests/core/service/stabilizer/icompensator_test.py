@@ -2,7 +2,7 @@
 
 '''
 Module
-    ichoreography_builder_test.py
+    icompensator_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,15 +16,15 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for IChoreographyBuilder structural protocol.
+    Unit tests for IPostureCompensator structural protocol.
 '''
 
 from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.trajectory.choreography_builder import ChoreographyBuilder
-from tetrapoder.core.service.trajectory.ichoreography_builder import IChoreographyBuilder
+from tetrapoder.core.service.stabilizer.compensator import PostureCompensator
+from tetrapoder.core.service.stabilizer.icompensator import IPostureCompensator
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -36,24 +36,24 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestIChoreographyBuilder(TestCase):
+class TestIPostureCompensator(TestCase):
     '''
-        Test cases verifying IChoreographyBuilder protocol conformance.
+        Test cases verifying IPostureCompensator structural protocol.
 
         It defines:
 
             :methods:
-                | test_structural_conformance - Verifies ChoreographyBuilder satisfies IChoreographyBuilder.
+                | test_structural_conformance - Verifies PostureCompensator satisfies IPostureCompensator.
     '''
 
     def test_structural_conformance(self) -> None:
         '''
-            Verifies ChoreographyBuilder satisfies IChoreographyBuilder.
+            Verifies PostureCompensator satisfies IPostureCompensator.
 
             :exceptions: None.
         '''
-        builder: ChoreographyBuilder = ChoreographyBuilder([])
-        self.assertTrue(isinstance(builder, IChoreographyBuilder))
+        compensator: PostureCompensator = PostureCompensator()
+        self.assertIsInstance(compensator, IPostureCompensator)
 
 
 if __name__ == '__main__':

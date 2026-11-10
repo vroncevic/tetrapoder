@@ -26,7 +26,7 @@ from os.path import exists
 from unittest import TestCase, main
 from unittest.mock import patch
 
-from tetrapoder.core.service.runner.motion_runner import MotionRunner
+from tetrapoder.core.service.runner.runner import MotionRunner
 from tetrapoder.infrastructure.command.definition import TetrapoderCommandDefinition
 from tetrapoder.infrastructure.command.executor import TetrapoderCommandExecutor
 

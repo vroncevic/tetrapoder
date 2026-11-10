@@ -2,7 +2,7 @@
 
 '''
 Module
-    itelemetry_decoder_test.py
+    itrajectory_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,15 +16,16 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for ITelemetryDecoder structural protocol.
+    Unit tests for ITrajectoryBuilder structural protocol.
 '''
 
 from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.telemetry.itelemetry_decoder import ITelemetryDecoder
-from tetrapoder.core.service.telemetry.telemetry_decoder import TelemetryDecoder
+from tetrapoder.core.service.kinematics.solver import KinematicsSolver
+from tetrapoder.core.service.trajectory.itrajectory import ITrajectoryBuilder
+from tetrapoder.core.service.trajectory.trajectory import TrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -36,24 +37,24 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestITelemetryDecoder(TestCase):
+class TestITrajectoryBuilder(TestCase):
     '''
-        Test cases verifying ITelemetryDecoder structural protocol.
+        Test cases verifying ITrajectoryBuilder protocol conformance.
 
         It defines:
 
             :methods:
-                | test_structural_conformance - Verifies TelemetryDecoder satisfies ITelemetryDecoder.
+                | test_structural_conformance - Verifies TrajectoryBuilder satisfies ITrajectoryBuilder.
     '''
 
     def test_structural_conformance(self) -> None:
         '''
-            Verifies TelemetryDecoder satisfies ITelemetryDecoder.
+            Verifies TrajectoryBuilder satisfies ITrajectoryBuilder.
 
             :exceptions: None.
         '''
-        decoder: TelemetryDecoder = TelemetryDecoder()
-        self.assertIsInstance(decoder, ITelemetryDecoder)
+        builder: TrajectoryBuilder = TrajectoryBuilder(KinematicsSolver(), [])
+        self.assertTrue(isinstance(builder, ITrajectoryBuilder))
 
 
 if __name__ == '__main__':

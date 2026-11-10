@@ -2,7 +2,7 @@
 
 '''
 Module
-    itelemetry_decoder.py
+    iframe.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,14 +16,12 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Structural interface for telemetry frame payload decoder.
+    Structural interface for binary protocol frame serialization.
 '''
 
 from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
-
-from tetrapoder.core.model.imu_telemetry import ImuTelemetry
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -36,29 +34,30 @@ __status__ = 'Updated'
 
 
 @runtime_checkable
-class ITelemetryDecoder(Protocol):
+class IProtocolFrameBuilder(Protocol):
     '''
-        Structural protocol defining binary telemetry payload decoder.
+        Structural protocol defining binary serial frame serialization and deserialization.
 
         It defines:
 
             :methods:
-                | decode - Decodes binary wire payload into ImuTelemetry value object.
-                | is_valid_payload - Checks if payload conforms to expected IMU wire size.
+                | build_frame - Encapsulates payload into wire-level frame with CRC-8.
+                | unpack_frame - Parses and validates an incoming wire frame.
     '''
 
-    def decode(self, payload: bytes) -> ImuTelemetry:
+    def build_frame(self, msg_id: int, payload: bytes = b'') -> bytes:
         '''
-            Decodes binary wire payload into ImuTelemetry value object.
+            Packs message ID and payload into binary frame protected by CRC-8.
 
-            :param payload: Raw wire payload bytes.
-            :return: Decoded ImuTelemetry instance.
+            :param msg_id: Numeric message or command ID.
+            :param payload: Binary payload bytes.
+            :return: Formatted wire-level frame bytes.
         '''
 
-    def is_valid_payload(self, payload: bytes) -> bool:
+    def unpack_frame(self, data: bytes) -> tuple[int, bytes]:
         '''
-            Checks if payload conforms to expected IMU wire size.
+            Unpacks and verifies CRC-8 on an incoming frame.
 
-            :param payload: Raw wire payload bytes.
-            :return: True if valid, False otherwise.
+            :param data: Wire bytes starting with SYNC byte.
+            :return: Tuple of (msg_id, payload).
         '''

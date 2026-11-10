@@ -28,7 +28,7 @@ from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.protocol.crc8 import CRC8
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
+from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

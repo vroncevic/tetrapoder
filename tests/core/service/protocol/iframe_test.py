@@ -2,7 +2,7 @@
 
 '''
 Module
-    iprotocol_frame_builder_test.py
+    iframe_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -24,8 +24,8 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from tetrapoder.core.service.protocol.crc8 import CRC8
-from tetrapoder.core.service.protocol.iprotocol_frame_builder import IProtocolFrameBuilder
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
+from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
+from tetrapoder.core.service.protocol.iframe import IProtocolFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

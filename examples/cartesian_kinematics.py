@@ -29,8 +29,8 @@ from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 from tetrapoder.core.service.protocol.crc8 import CRC8
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
-from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
+from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
+from tetrapoder.core.service.trajectory.trajectory import TrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

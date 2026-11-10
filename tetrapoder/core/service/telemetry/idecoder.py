@@ -2,7 +2,7 @@
 
 '''
 Module
-    imotion_runner_test.py
+    idecoder.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,17 +16,14 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for IMotionRunner structural protocol.
+    Structural interface for telemetry frame payload decoder.
 '''
 
 from __future__ import annotations
 
-from unittest import TestCase, main
+from typing import Protocol, runtime_checkable
 
-from tetrapoder.core.service.protocol.crc8 import CRC8
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
-from tetrapoder.core.service.runner.imotion_runner import IMotionRunner
-from tetrapoder.core.service.runner.motion_runner import MotionRunner
+from tetrapoder.core.model.imu_telemetry import ImuTelemetry
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -38,24 +35,30 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestIMotionRunner(TestCase):
+@runtime_checkable
+class ITelemetryDecoder(Protocol):
     '''
-        Test cases verifying IMotionRunner protocol conformance.
+        Structural protocol defining binary telemetry payload decoder.
 
         It defines:
 
             :methods:
-                | test_structural_conformance - Verifies MotionRunner satisfies IMotionRunner.
+                | decode - Decodes binary wire payload into ImuTelemetry value object.
+                | is_valid_payload - Checks if payload conforms to expected IMU wire size.
     '''
 
-    def test_structural_conformance(self) -> None:
+    def decode(self, payload: bytes) -> ImuTelemetry:
         '''
-            Verifies MotionRunner satisfies IMotionRunner.
+            Decodes binary wire payload into ImuTelemetry value object.
 
-            :exceptions: None.
+            :param payload: Raw wire payload bytes.
+            :return: Decoded ImuTelemetry instance.
         '''
-        self.assertTrue(isinstance(MotionRunner(ProtocolFrameBuilder(CRC8())), IMotionRunner))
 
+    def is_valid_payload(self, payload: bytes) -> bool:
+        '''
+            Checks if payload conforms to expected IMU wire size.
 
-if __name__ == '__main__':
-    main()
+            :param payload: Raw wire payload bytes.
+            :return: True if valid, False otherwise.
+        '''

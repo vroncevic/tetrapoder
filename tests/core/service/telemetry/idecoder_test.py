@@ -2,7 +2,7 @@
 
 '''
 Module
-    iposture_compensator_test.py
+    idecoder_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,15 +16,15 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for IPostureCompensator structural protocol.
+    Unit tests for ITelemetryDecoder structural protocol.
 '''
 
 from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.stabilizer.iposture_compensator import IPostureCompensator
-from tetrapoder.core.service.stabilizer.posture_compensator import PostureCompensator
+from tetrapoder.core.service.telemetry.decoder import TelemetryDecoder
+from tetrapoder.core.service.telemetry.idecoder import ITelemetryDecoder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -36,24 +36,24 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestIPostureCompensator(TestCase):
+class TestITelemetryDecoder(TestCase):
     '''
-        Test cases verifying IPostureCompensator structural protocol.
+        Test cases verifying ITelemetryDecoder structural protocol.
 
         It defines:
 
             :methods:
-                | test_structural_conformance - Verifies PostureCompensator satisfies IPostureCompensator.
+                | test_structural_conformance - Verifies TelemetryDecoder satisfies ITelemetryDecoder.
     '''
 
     def test_structural_conformance(self) -> None:
         '''
-            Verifies PostureCompensator satisfies IPostureCompensator.
+            Verifies TelemetryDecoder satisfies ITelemetryDecoder.
 
             :exceptions: None.
         '''
-        compensator: PostureCompensator = PostureCompensator()
-        self.assertIsInstance(compensator, IPostureCompensator)
+        decoder: TelemetryDecoder = TelemetryDecoder()
+        self.assertIsInstance(decoder, ITelemetryDecoder)
 
 
 if __name__ == '__main__':

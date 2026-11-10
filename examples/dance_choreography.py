@@ -30,9 +30,9 @@ from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.gait.builder import GaitPlanBuilder
 from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 from tetrapoder.core.service.protocol.crc8 import CRC8
-from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
-from tetrapoder.core.service.trajectory.choreography_builder import ChoreographyBuilder
-from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
+from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
+from tetrapoder.core.service.trajectory.choreography import ChoreographyBuilder
+from tetrapoder.core.service.trajectory.trajectory import TrajectoryBuilder
 from tetrapoder.infrastructure.storage.binary_writer import BinaryWriter
 
 __author__ = 'Vladimir Roncevic'

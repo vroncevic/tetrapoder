@@ -2,7 +2,7 @@
 
 '''
 Module
-    telemetry_decoder_test.py
+    decoder_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -26,7 +26,7 @@ from unittest import TestCase, main
 
 from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
 from tetrapoder.core.model.imu_telemetry import ImuTelemetry
-from tetrapoder.core.service.telemetry.telemetry_decoder import TelemetryDecoder
+from tetrapoder.core.service.telemetry.decoder import TelemetryDecoder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

@@ -2,7 +2,7 @@
 
 '''
 Module
-    imotion_runner.py
+    ichoreography_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,15 +16,15 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Structural interface for motion plan execution runner.
+    Unit tests for IChoreographyBuilder structural protocol.
 '''
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
+from unittest import TestCase, main
 
-from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.runner.itransport import ITransport
+from tetrapoder.core.service.trajectory.choreography import ChoreographyBuilder
+from tetrapoder.core.service.trajectory.ichoreography import IChoreographyBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -36,31 +36,25 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@runtime_checkable
-class IMotionRunner(Protocol):
+class TestIChoreographyBuilder(TestCase):
     '''
-        Structural protocol defining motion plan execution runner.
+        Test cases verifying IChoreographyBuilder protocol conformance.
 
         It defines:
 
             :methods:
-                | execute - Streams motion plan frames with ACK/NACK validation.
-                | ping - Verifies robot heartbeat connectivity.
+                | test_structural_conformance - Verifies ChoreographyBuilder satisfies IChoreographyBuilder.
     '''
 
-    def execute(self, plan: MotionPlan, transport: ITransport) -> bool:
+    def test_structural_conformance(self) -> None:
         '''
-            Executes compiled motion plan commands over hardware transport.
+            Verifies ChoreographyBuilder satisfies IChoreographyBuilder.
 
-            :param plan: MotionPlan container to execute.
-            :param transport: Hardware transport instance.
-            :return: True if all commands acknowledged, False otherwise.
+            :exceptions: None.
         '''
+        builder: ChoreographyBuilder = ChoreographyBuilder([])
+        self.assertTrue(isinstance(builder, IChoreographyBuilder))
 
-    def ping(self, transport: ITransport) -> bool:
-        '''
-            Sends heartbeat ping and checks for pong response.
 
-            :param transport: Hardware transport instance.
-            :return: True if pong response received, False otherwise.
-        '''
+if __name__ == '__main__':
+    main()
