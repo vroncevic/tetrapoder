@@ -26,7 +26,7 @@ from tetrapoder.core.model.exceptions.protocol_error import ProtocolError
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.response_id import ResponseId
 from tetrapoder.core.service.protocol.iframe import IProtocolFrameBuilder
-from tetrapoder.core.service.runner.itransport import ITransport
+from tetrapoder.core.service.transport.itransport import ITransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

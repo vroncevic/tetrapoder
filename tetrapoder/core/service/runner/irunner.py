@@ -24,7 +24,7 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from tetrapoder.core.model.motion_plan import MotionPlan
-from tetrapoder.core.service.runner.itransport import ITransport
+from tetrapoder.core.service.transport.itransport import ITransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
