@@ -2,7 +2,7 @@
 
 '''
 Module
-    trajectory_test.py
+    builder_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -28,7 +28,7 @@ from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.kinematics.solver import KinematicsSolver
-from tetrapoder.core.service.trajectory.trajectory import TrajectoryBuilder
+from tetrapoder.core.service.trajectory.builder import TrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

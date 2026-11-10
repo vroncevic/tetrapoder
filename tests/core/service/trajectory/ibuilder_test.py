@@ -2,7 +2,7 @@
 
 '''
 Module
-    itrajectory_test.py
+    ibuilder_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -24,8 +24,8 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from tetrapoder.core.service.kinematics.solver import KinematicsSolver
-from tetrapoder.core.service.trajectory.itrajectory import ITrajectoryBuilder
-from tetrapoder.core.service.trajectory.trajectory import TrajectoryBuilder
+from tetrapoder.core.service.trajectory.builder import TrajectoryBuilder
+from tetrapoder.core.service.trajectory.ibuilder import ITrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

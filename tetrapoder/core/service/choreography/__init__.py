@@ -2,7 +2,7 @@
 
 '''
 Module
-    ichoreography_test.py
+    __init__.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -16,15 +16,10 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for IChoreographyBuilder structural protocol.
+    Choreography sequence and macro action planning service package.
 '''
 
 from __future__ import annotations
-
-from unittest import TestCase, main
-
-from tetrapoder.core.service.trajectory.choreography import ChoreographyBuilder
-from tetrapoder.core.service.trajectory.ichoreography import IChoreographyBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
@@ -34,27 +29,3 @@ __version__ = '1.0.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
-
-
-class TestIChoreographyBuilder(TestCase):
-    '''
-        Test cases verifying IChoreographyBuilder protocol conformance.
-
-        It defines:
-
-            :methods:
-                | test_structural_conformance - Verifies ChoreographyBuilder satisfies IChoreographyBuilder.
-    '''
-
-    def test_structural_conformance(self) -> None:
-        '''
-            Verifies ChoreographyBuilder satisfies IChoreographyBuilder.
-
-            :exceptions: None.
-        '''
-        builder: ChoreographyBuilder = ChoreographyBuilder([])
-        self.assertTrue(isinstance(builder, IChoreographyBuilder))
-
-
-if __name__ == '__main__':
-    main()

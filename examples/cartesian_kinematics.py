@@ -30,7 +30,7 @@ from tetrapoder.core.service.compiler.motion import MotionCompiler
 from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 from tetrapoder.core.service.crc8.crc import CRC8
 from tetrapoder.core.service.protocol.frame import ProtocolFrameBuilder
-from tetrapoder.core.service.trajectory.trajectory import TrajectoryBuilder
+from tetrapoder.core.service.trajectory.builder import TrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

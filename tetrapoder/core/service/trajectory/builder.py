@@ -2,7 +2,7 @@
 
 '''
 Module
-    trajectory.py
+    builder.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
