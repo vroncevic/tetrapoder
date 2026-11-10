@@ -2,7 +2,7 @@
 
 '''
 Module
-    ikinematics_solver_test.py
+    isolver_test.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     tetrapoder is free software: you can redistribute it and/or modify it
@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from tetrapoder.core.service.kinematics.ikinematics_solver import IKinematicsSolver
-from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
+from tetrapoder.core.service.kinematics.isolver import IKinematicsSolver
+from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

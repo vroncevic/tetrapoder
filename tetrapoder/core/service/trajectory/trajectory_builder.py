@@ -29,7 +29,7 @@ from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.model.point3d import Point3D
-from tetrapoder.core.service.kinematics.ikinematics_solver import IKinematicsSolver
+from tetrapoder.core.service.kinematics.isolver import IKinematicsSolver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'

@@ -27,7 +27,7 @@ from sys import exit as sys_exit, stdout
 from tetrapoder.core.model.imu_telemetry import ImuTelemetry
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.point3d import Point3D
-from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
+from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 from tetrapoder.core.service.stabilizer.posture_compensator import PostureCompensator
 from tetrapoder.core.service.telemetry.telemetry_decoder import TelemetryDecoder
 
@@ -84,3 +84,4 @@ def main() -> bool:
 
 if __name__ == '__main__':
     sys_exit(0 if main() else 1)
+

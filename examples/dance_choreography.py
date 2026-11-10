@@ -28,7 +28,7 @@ from tetrapoder.core.model.plan_command import PlanCommand
 from tetrapoder.core.model.point3d import Point3D
 from tetrapoder.core.service.compiler.motion_compiler import MotionCompiler
 from tetrapoder.core.service.gait.gait_plan_builder import GaitPlanBuilder
-from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
+from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 from tetrapoder.core.service.protocol.crc8 import CRC8
 from tetrapoder.core.service.protocol.protocol_frame_builder import ProtocolFrameBuilder
 from tetrapoder.core.service.trajectory.choreography_builder import ChoreographyBuilder

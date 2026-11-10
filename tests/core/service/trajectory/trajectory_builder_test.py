@@ -27,7 +27,7 @@ from tetrapoder.core.model.command_id import CommandId
 from tetrapoder.core.model.leg_angles import LegAngles
 from tetrapoder.core.model.motion_plan import MotionPlan
 from tetrapoder.core.model.point3d import Point3D
-from tetrapoder.core.service.kinematics.kinematics_solver import KinematicsSolver
+from tetrapoder.core.service.kinematics.solver import KinematicsSolver
 from tetrapoder.core.service.trajectory.trajectory_builder import TrajectoryBuilder
 
 __author__ = 'Vladimir Roncevic'
