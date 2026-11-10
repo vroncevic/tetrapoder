@@ -57,6 +57,7 @@ class TestCommandId(TestCase):
         self.assertEqual(CommandId.GAIT_STEP, 0x10)
         self.assertEqual(CommandId.QUEUE_KEYFRAME, 0x20)
         self.assertEqual(CommandId.CLEAR_QUEUE, 0x21)
+        self.assertEqual(CommandId.GET_IMU, 0x32)
 
 
 if __name__ == '__main__':

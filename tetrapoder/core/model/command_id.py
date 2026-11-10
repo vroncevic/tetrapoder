@@ -50,6 +50,7 @@ class CommandId(IntEnum):
                 | CLEAR_QUEUE - Clear motion queue and release keyframes.
                 | GET_STATUS - Request telemetry status frame.
                 | RESET_ERRORS - Clear error flags on controller.
+                | GET_IMU - Request 6-DOF IMU sensor telemetry.
     '''
 
     PING = 0x01
@@ -62,3 +63,4 @@ class CommandId(IntEnum):
     CLEAR_QUEUE = 0x21
     GET_STATUS = 0x30
     RESET_ERRORS = 0x31
+    GET_IMU = 0x32

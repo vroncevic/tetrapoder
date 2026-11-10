@@ -44,9 +44,11 @@ class ResponseId(IntEnum):
                 | NACK - Negative acknowledgment with error code.
                 | PONG - Heartbeat response to PING.
                 | STATUS - Periodic telemetry status packet.
+                | IMU - 6-DOF IMU attitude and acceleration telemetry packet.
     '''
 
     ACK = 0x80
     NACK = 0x81
     PONG = 0x84
     STATUS = 0x90
+    IMU = 0x91

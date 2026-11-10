@@ -55,6 +55,7 @@ class TestResponseId(TestCase):
         self.assertEqual(ResponseId.NACK, 0x81)
         self.assertEqual(ResponseId.PONG, 0x84)
         self.assertEqual(ResponseId.STATUS, 0x90)
+        self.assertEqual(ResponseId.IMU, 0x91)
 
 
 if __name__ == '__main__':
