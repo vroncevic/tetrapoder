@@ -319,13 +319,13 @@ Each of the 4 robot legs consists of 3 links:
 Given target foot Cartesian coordinates $(x, y, z)$ relative to the leg base:
 
 1. **Coxa Angle**:
-   $$\theta_{\text{coxa}} = \operatorname{atan2}(y, x)$$
+   $$\theta_{\text{coxa}} = \text{atan2}(y, x)$$
 
 2. **Effective Limb-Plane Coordinate**:
    $$r_{\text{proj}} = \sqrt{x^2 + y^2} - L_1, \quad d = \sqrt{r_{\text{proj}}^2 + z^2}$$
 
 3. **Femur & Tibia Angles** (Law of Cosines):
-   $$\cos(\alpha) = \frac{L_2^2 + d^2 - L_3^2}{2 L_2 d}, \quad \theta_{\text{femur}} = \operatorname{atan2}(z, r_{\text{proj}}) + \alpha$$
+   $$\cos(\alpha) = \frac{L_2^2 + d^2 - L_3^2}{2 L_2 d}, \quad \theta_{\text{femur}} = \text{atan2}(z, r_{\text{proj}}) + \alpha$$
    $$\cos(\beta) = \frac{L_2^2 + L_3^2 - d^2}{2 L_2 L_3}, \quad \theta_{\text{tibia}} = \beta$$
 
 The solver verifies reachability ($|L_2 - L_3| \le d \le L_2 + L_3$) and maps joint angles to servo home references ($90^\circ$).
